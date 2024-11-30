@@ -91,7 +91,3 @@
 #### 2.3. Frontend
 - Templates: **HTML** + **Jinja**
 - Styling: **Bootstrap**, **CSS**, et **JavaScript**.
-
----
-
-**Note:** Respectez toutes les contraintes et spécifications tout au long du développement.
