@@ -1,4 +1,6 @@
 ### **Gestion des avions**
+[GDF graphique](https://lucid.app/lucidchart/c8cb7626-89e6-4ff8-bb54-253da5e9c9ed/edit?viewport_loc=-222%2C-1136%2C4858%2C2096%2C0_0&invitationId=inv_d1414001-bfe3-4d20-a25e-5551a47f8e4c)
+[MCD graphique](https://lucid.app/lucidchart/42662a37-ddb1-40c9-9f54-fc8262fb4091/edit?viewport_loc=26%2C-426%2C3612%2C1559%2C0_0&invitationId=inv_8a89b89b-8c19-4986-831b-5c7490f19732)
 #### **Entités**
 
 - **AVION**
