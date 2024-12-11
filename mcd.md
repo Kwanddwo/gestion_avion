@@ -9,6 +9,7 @@
     - **TYPAV** : Type de l'avion (exemple : B747, A300)
     - **DATMS** : Date de mise en service
     - **NBHDDREV** : Nombre d'heures de vol depuis la dernière révision REVISION
+    - **DATDREV** : Date de la denière révision
     
 - **REVISION**
 
@@ -28,6 +29,7 @@
 ### **Contraintes Métier :**
 
 - Les attributs `TYPAV` et `DATMS` de l’entité **AVION** ne peuvent pas être modifiés après leur enregistrement initial.
+- la date `DATDREV` est changez au date actuelle a chaque révision enregistrée
 - Le conteur `NBHDDREV`est remis a zéro a chaque révision
 - Une révision est obligatoire si :
     - La dernière révision remonte à plus de 6 mois ou 1000h.
