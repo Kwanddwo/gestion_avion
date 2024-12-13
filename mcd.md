@@ -10,6 +10,7 @@
     - **DATMS** : Date de mise en service
     - **NBHDDREV** : Nombre d'heures de vol depuis la dernière révision REVISION
     - **DATDREV** : Date de la denière révision
+    - **NBRHVOL** : Nombre d'heures de vol totale
     
 - **REVISION**
 
