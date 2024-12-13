@@ -6,11 +6,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Vol
+
+# TODO: remove csrf_exempt later
 
 @login_required
 def index(request):
-    return render(request, 'myapp\index.html')
+    vols = Vol.objects.all()
+    return render(request, 'myapp\index.html', {"vols", vols})
 
 @csrf_exempt
 def login_view(request):
@@ -71,3 +74,27 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
 
     return render(request, "myapp/register.html")
+
+# These all do actions based on the type of request they get
+# (GET, POST, PUT, DELETE...)
+# GET creates a model, POST creates, PUT updates, DELETE deletes...
+# other actions will need another view
+@login_required
+def vol(request):
+    pass
+
+@login_required
+def avion(request):
+    pass
+
+@login_required
+def rapport(request):
+    pass
+
+@login_required
+def employe(request):
+    pass
+
+@login_required
+def ville(request):
+    pass

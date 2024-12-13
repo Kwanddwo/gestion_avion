@@ -64,26 +64,25 @@
 
 ### 1. Analyse & Conception
 #### Phases:
-1. **MCD**: DD, GDF, et MCD
+1. **MCD**: DD, GDF, et MCD (DONE)
 2. **MLD**: Modèle logique des données
 3. **MCT**: Modèle conceptuel des traitements
 4. **MOT**: Modèle opérationnel des traitements
+5. **Requétes utiles**
 
 ---
 
 ### 2. Implémentation
 
 #### 2.1. Base de Données
-- Traduction du **MLD** en **MySQL**:
-  - Définir les types.
+- Création des models (DONE)
   
 #### 2.2. Backend
-- Choix entre **Flask** ou **Django**:
-  - Connexion avec MySQL:
-    - **MySQL Connector** ou **SQLAlchemy (ORM)**.
+- **Django**:
+  - Connexion avec MySQL (DONE)
   - **Opérations CRUD**:
-    - Première étape: Base de données ➡ Backend.
-    - Deuxième étape: Backend ➡ Frontend.
+    - Première étape: Base de données ➡ Backend (Done by ORM)
+    - Deuxième étape: Backend ➡ Frontend (Views)
   - Implémentation des **traitements (MOT)** dans les **views**.
   - Sécurité:
     - Gestion des comptes admin (enregistrement, connexion, `@login_required`).
