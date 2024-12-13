@@ -6,6 +6,6 @@
         <h1>Welcome, {{ request.user.username }}!</h1>
     {% endif %}
     
-    <a class="login-link" href="{% url 'login' %}">Log In</a>
+    <a class="logout-link" href="{% url 'logout' %}">Log Out</a>
     
 {% endblock %}
