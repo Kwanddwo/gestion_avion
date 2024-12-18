@@ -7,6 +7,7 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     path("vol", views.vol, name="vol"),
+    path("vol/<int:pk>", views.vol_view, name="vol_view"),
     path("avion", views.avion, name="avion"),
     path("rapport", views.rapport, name="rapport"),
     path("employe", views.employe, name="employe"),

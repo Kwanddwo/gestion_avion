@@ -1,0 +1,45 @@
+{% extends "myapp/layout.html" %}
+
+{% block head %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById("update-form");
+            const info = document.getElementById("vol-info");
+            const button = document.getElementById("update-button");
+            button.onclick = () => {
+                if (form.style.display == "none") {
+                    form.style.setProperty("display", "block");
+                    info.style.setProperty("display", "none");
+                    button.innerHTML = "Annuler";
+                } else {
+                    form.style.setProperty("display", "none");
+                    info.style.setProperty("display", "block");
+                    button.innerHTML = "Modifier";
+                }
+            }
+        })
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>Vol ID: {{vol.pk}}</h1>
+    <div id="vol-info">
+        <p>Avion: {{vol.avion}}</p>
+        <p>Départ: {{vol.depart.nom}} à {{vol.heure_depart}}</p>
+        <p>Arrivée: {{vol.arrive.nom}}</p>
+        <p>Durée: {{vol.duree}}</p>
+        <p>Jours: </p>
+        <ul>
+            {% for jour in vol.jours.all %}
+                <li>{{ jour }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <form style="display: none;" id="update-form" action="{% url 'vol_view' vol.pk %}" method="post">
+        {{ updateForm }}
+        <input type="submit" value="Modifier Vol">
+    </form>
+    
+    <button id="update-button">Modifier</button>
+
+{% endblock %}

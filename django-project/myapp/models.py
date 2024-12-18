@@ -5,11 +5,11 @@ class User(AbstractUser):
     pass
 
 class Avion(models.Model):
-    type_avion = models.CharField(max_length=4, editable=False)
+    type_avion = models.CharField(max_length=4)
     date_mise_service = models.DateField(auto_now_add=True, editable=False)
     heures_vol_der_rev = models.PositiveIntegerField(default=0)
     heures_vol = models.PositiveIntegerField(default=0)
-    date_der_rev = models.DateTimeField(null=True)
+    date_der_rev = models.DateTimeField(null=True, blank=True)
     def __str__(self):
         return f"Avion(id={self.id}, type={self.type_avion})"
 
@@ -52,18 +52,18 @@ class Jour(models.Model):
     SAMEDI = "SA"
     DIMANCHE = "DI"
     JOUR_CHOICES = {
-        LUNDI: "lundi",
-        MARDI: "mardi",
-        MERCREDI: "mercredi",
-        JEUDI: "jeudi",
-        VENDREDI: "vendredi",
-        SAMEDI: "samedi",
-        DIMANCHE: "dimanche"
+        LUNDI: "Lundi",
+        MARDI: "Mardi",
+        MERCREDI: "Mercredi",
+        JEUDI: "Jeudi",
+        VENDREDI: "Vendredi",
+        SAMEDI: "Samedi",
+        DIMANCHE: "Dimanche"
     }
 
-    jour = models.CharField(max_length=2, choices=JOUR_CHOICES)
+    jour = models.CharField(max_length=2, choices=JOUR_CHOICES, unique=True)
     def __str__(self):
-        return f"Jour {self.JOUR_CHOICES[self.jour]}"
+        return self.JOUR_CHOICES[self.jour]
 
 class Vol(models.Model):
     avion = models.ForeignKey(Avion, on_delete=models.SET_NULL, related_name="vols", null=True)

@@ -7,13 +7,13 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import User, Vol
+from .forms import VolForm
 
 # TODO: remove csrf_exempt later
 
 @login_required
 def index(request):
-    vols = Vol.objects.all()
-    return render(request, 'myapp\index.html', {"vols", vols})
+    return render(request, 'myapp/index.html')
 
 @csrf_exempt
 def login_view(request):
@@ -80,8 +80,43 @@ def register(request):
 # GET creates a model, POST creates, PUT updates, DELETE deletes...
 # other actions will need another view
 @login_required
+@csrf_exempt
 def vol(request):
-    pass
+    if request.method == "POST":
+        createForm = VolForm(request.POST)
+        createForm.save()
+        
+    if request.method == "GET":
+        createForm = VolForm()
+    
+    vols = Vol.objects.all()
+    return render(request, "myapp/vols.html", {
+        "vols": vols, 
+        "createForm": createForm,
+    })
+
+@login_required
+@csrf_exempt
+def vol_view(request, pk):
+    try:
+        vol = Vol.objects.get(pk=pk)
+    except Vol.DoesNotExist:
+        return render(request, "myapp/apology.html", {
+            "message": "Vol not found"
+        })
+        
+    
+    updateForm = VolForm(instance=vol)
+
+    if request.method == "POST":
+        updateForm.save()
+
+    if vol:
+        return render(request, "myapp/vol_view.html", {
+            "vol": vol,
+            "updateForm": updateForm
+        })
+
 
 @login_required
 def avion(request):

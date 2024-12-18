@@ -1,0 +1,32 @@
+{% extends "myapp/layout.html" %}
+
+{% block body %}
+    <form action="{% url 'vol' %}" method="post">
+        {{ createForm }}
+        <input type="submit" value="Ajouter Vol">
+    </form>
+
+    <h1>Vols</h1>
+    <table>
+        <table>
+            <tr>
+              <th>ID</th>
+              <th>Jours</th>
+              <th>Départ</th>
+              <th>Arrivé</th>
+              <th>Durée</th>
+            </tr>
+            {% for vol in vols %}
+                <a href="{% url 'vol_view' vol.id %}"><tr>
+                    <td>{{vol.id}}</td>
+                    <td>{% for jour in vol.jours.all %}
+                        {{ jour }}
+                    {% endfor %}</td>
+                    <td>{{vol.depart.nom}} à {{vol.heure_depart}}</td>
+                    <td>{{vol.arrive.nom}}</td>
+                    <td>{{vol.duree}}</td>
+                </tr></a>
+            {% endfor %}
+          </table>
+    </table>
+{% endblock %}
