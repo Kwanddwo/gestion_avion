@@ -1,0 +1,55 @@
+{% extends "myapp/layout.html" %}
+
+{% block head %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createForm = document.getElementById('create-avion-form');
+            const createFormButton = document.getElementById('create-avion-button');
+            createFormButton.onclick = () => {
+                if (createForm.style.display == "none") {
+                    createForm.style.setProperty("display", "block");
+                    createFormButton.innerHTML = "Annuler";
+                } else {
+                    createForm.style.setProperty("display", "none");
+                    createFormButton.innerHTML = "Ajouter un avion";
+                }
+            }
+        })
+    </script>
+{% endblock %}
+
+{% block body %}
+    <form style="display: none;" id="create-avion-form" action="{% url 'avion' %}" method="post">
+        {{ createForm }}
+        <input type="submit" value="Ajouter">
+    </form>
+    <button id="create-avion-button">Ajouter un avion</button>
+
+    <h1>Avions</h1>
+    <table>
+        <table>
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Date Mise En Service</th>
+              <th>Heures de vol</th>
+              <th>Heures de vol dés dernière révision</th>
+              <th>Date de la dernière révision</th>
+            </tr>
+            {% for avion in avions %}
+                <tr id="avion-info-{{avion.id}}" onclick="window.location.href='/avion/{{avion.id}}';" style="cursor: pointer;">
+                    <td>{{avion.id}}</td>
+                    <td>{{avion.type}}</td>
+                    <td>{{avion.date_mise_service}}</td>
+                    <td>{{avion.heures_vol}}</td>
+                    <td>{{avion.heures_vol_der_rev}}</td>
+                    <td>{{avion.date_der_rev}}</td>
+                    <td><form style="display: inline;" method="post" action="{% url 'avion_view' avion.pk %}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Supprimer" />
+                    </form></td>
+                </tr>
+            {% endfor %}
+          </table>
+    </table>
+{% endblock %}

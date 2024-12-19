@@ -5,9 +5,10 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
-from .models import User, Vol, Escale
-from .forms import VolForm, EscaleForm
+from .models import User, Vol, Escale, Avion
+from .forms import VolForm, EscaleForm, AvionForm
 
 # TODO: remove csrf_exempt later
 
@@ -75,10 +76,6 @@ def register(request):
 
     return render(request, "myapp/register.html")
 
-# These all do actions based on the type of request they get
-# (GET, POST, PUT, DELETE...)
-# GET creates a model, POST creates, PUT updates, DELETE deletes...
-# other actions will need another view
 @login_required
 @csrf_exempt
 def vol(request):
@@ -86,8 +83,7 @@ def vol(request):
 
     if request.method == "POST":
         createForm = VolForm(request.POST)
-        if createForm.is_valid():
-            createForm.save()
+        createForm.save()
     
     vols = Vol.objects.all()
     return render(request, "myapp/vols.html", {
@@ -101,7 +97,6 @@ def vol_view(request, pk):
     vol = get_object_or_404(Vol, pk=pk)    
 
     if request.method == "POST":
-
         if request.POST.get("_method") == "DELETE":
             vol.delete()
             return redirect("vol")
@@ -114,13 +109,12 @@ def vol_view(request, pk):
     escales = vol.escales.all().order_by('no_ord')
     createEscaleForm = EscaleForm()
 
-    if vol:
-        return render(request, "myapp/vol_view.html", {
-            "vol": vol,
-            "escales": escales,
-            "updateForm": updateForm,
-            "escaleForm": createEscaleForm,
-        })
+    return render(request, "myapp/vol_view.html", {
+        "vol": vol,
+        "escales": escales,
+        "updateForm": updateForm,
+        "escaleForm": createEscaleForm,
+    })
     
 @login_required
 @csrf_exempt
@@ -131,6 +125,8 @@ def create_escale(request, vol_pk):
         form = EscaleForm(request.POST)
         escale = form.save(commit=False)
         escale.vol = vol
+        if escale.ville == vol.depart or escale.ville == vol.arrive:
+            raise ValidationError({"ville": "Ville de l'escale est déja le départ ou l'arrivé de ce vol."})
         escale.save()
 
     return redirect("vol_view", pk=vol_pk)
@@ -141,7 +137,6 @@ def escale(request, pk):
     escale = get_object_or_404(Escale, pk=pk)
     
     if request.method == "POST":
-
         if request.POST.get("_method") == "DELETE":
             escale.delete()
             return redirect("vol_view", pk=escale.vol.pk)
@@ -157,11 +152,39 @@ def escale(request, pk):
     })
 
 @login_required
+@csrf_exempt
 def avion(request):
-    pass
+    createForm = AvionForm()
+
+    if request.method == "POST":
+        createForm = AvionForm(request.POST)
+        createForm.save()
+    
+    avions = Avion.objects.all()
+    return render(request, "myapp/avions.html", {
+        "avions": avions, 
+        "createForm": createForm,
+    })
 
 def avion_view(request, pk):
     # avion = Avion.object.get()
+    avion = get_object_or_404(Avion, pk=pk)    
+
+    if request.method == "POST":
+        if request.POST.get("_method") == "DELETE":
+            avion.delete()
+            return redirect("avion")
+        
+        updateForm = AvionForm(request.POST, instance=avion)
+        updateForm.save()
+    else:
+        updateForm = AvionForm(instance=avion)
+
+    if avion:
+        return render(request, "myapp/avion_view.html", {
+            "avion": avion,
+            "updateForm": updateForm,
+        })
     pass
 
 @login_required

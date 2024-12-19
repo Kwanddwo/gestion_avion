@@ -44,6 +44,10 @@
                     <td>{% for jour in vol.jours.all %}
                         {{ jour }}
                     {% endfor %}</td>
+                    <td><form style="display: inline;" method="post" action="{% url 'vol_view' vol.pk %}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Supprimer" />
+                    </form></td>
                 </tr>
             {% endfor %}
           </table>

@@ -11,5 +11,7 @@ class EscaleForm(forms.ModelForm):
         model = Escale
         fields = ["ville", "heure_arrive", "duree", "no_ord"]
         
-class AvionForm(forms.Form):
-    pass
+class AvionForm(forms.ModelForm):
+    class Meta:
+        model = Avion
+        fields = ["type"]

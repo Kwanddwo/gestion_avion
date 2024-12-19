@@ -1,12 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 
 class User(AbstractUser):
     pass
 
 class Avion(models.Model):
-    type_avion = models.CharField(max_length=4)
+    type = models.CharField(max_length=4)
     date_mise_service = models.DateField(auto_now_add=True, editable=False)
     heures_vol_der_rev = models.PositiveIntegerField(default=0)
     heures_vol = models.PositiveIntegerField(default=0)
@@ -71,18 +72,34 @@ class Vol(models.Model):
     depart = models.ForeignKey(Ville, on_delete=models.CASCADE, related_name="depart_vols")
     arrive = models.ForeignKey(Ville, on_delete=models.CASCADE, related_name="arrive_vols")
     heure_depart = models.TimeField()
-    duree = models.DurationField() #en millisecondes
+    duree = models.DurationField()  # en millisecondes
     jours = models.ManyToManyField(Jour, related_name="vols")
+
     def __str__(self):
         return f"from {self.depart} at {self.heure_depart} to {self.arrive} in {self.duree} onboard Avion {self.avion}"
+
+    def clean(self):
+        super().clean()
+        if self.depart == self.arrive:
+            raise ValidationError("The departure and arrival cities must be different.")
+
+    def get_heure_arrive(self):
+        return self.heure_depart + self.duree
+
 
 class Escale(models.Model):
     vol = models.ForeignKey(Vol, on_delete=models.CASCADE, related_name="escales")
     ville = models.ForeignKey(Ville, on_delete=models.CASCADE, related_name="escales")
     heure_arrive = models.TimeField()
-    duree = models.DurationField() #en millisecondes
+    duree = models.DurationField()  # en millisecondes
     no_ord = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+
     class Meta:
         ordering = ['no_ord']
+        constraints = [
+            models.UniqueConstraint(fields=['vol', 'no_ord'], name='unique_escale_per_vol'),
+            models.UniqueConstraint(fields=['vol', 'ville'], name='unique_ville_per_vol'),
+        ]
+
     def __str__(self):
         return f"Escale {self.no_ord} pour vol n° {self.vol.pk}, arrivée à {self.ville} à {self.heure_arrive}, duree: {self.duree}"

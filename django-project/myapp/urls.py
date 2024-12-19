@@ -11,6 +11,7 @@ urlpatterns = [
     path("escale/create/<int:vol_pk>", views.create_escale, name="create_escale"),
     path("escale/<int:pk>", views.escale, name="escale"),
     path("avion", views.avion, name="avion"),
+    path("avion/<int:pk>", views.avion_view, name="avion_view"),
     path("rapport", views.rapport, name="rapport"),
     path("employe", views.employe, name="employe"),
     path("ville", views.ville, name="ville"),
