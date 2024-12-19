@@ -3,11 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from .models import User, Vol
-from .forms import VolForm
+from .models import User, Vol, Escale
+from .forms import VolForm, EscaleForm
 
 # TODO: remove csrf_exempt later
 
@@ -27,7 +27,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return redirect("index")
         else:
             return render(request, "myapp/login.html", {
                 "message": "Invalid username and/or password."
@@ -38,7 +38,7 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("login"))
+    return redirect("login")
 
 @csrf_exempt
 def register(request):
@@ -71,7 +71,7 @@ def register(request):
         # Log the user in
         login(request, user)  
   
-        return HttpResponseRedirect(reverse("index"))
+        return redirect("index")
 
     return render(request, "myapp/register.html")
 
@@ -82,12 +82,12 @@ def register(request):
 @login_required
 @csrf_exempt
 def vol(request):
+    createForm = VolForm()
+
     if request.method == "POST":
         createForm = VolForm(request.POST)
-        createForm.save()
-        
-    if request.method == "GET":
-        createForm = VolForm()
+        if createForm.is_valid():
+            createForm.save()
     
     vols = Vol.objects.all()
     return render(request, "myapp/vols.html", {
@@ -98,28 +98,65 @@ def vol(request):
 @login_required
 @csrf_exempt
 def vol_view(request, pk):
-    try:
-        vol = Vol.objects.get(pk=pk)
-    except Vol.DoesNotExist:
-        return render(request, "myapp/apology.html", {
-            "message": "Vol not found"
-        })
-        
-    
-    updateForm = VolForm(instance=vol)
+    vol = get_object_or_404(Vol, pk=pk)    
 
     if request.method == "POST":
+
+        if request.POST.get("_method") == "DELETE":
+            vol.delete()
+            return redirect("vol")
+        
+        updateForm = VolForm(request.POST, instance=vol)
         updateForm.save()
+    else:
+        updateForm = VolForm(instance=vol)
+
+    escales = vol.escales.all().order_by('no_ord')
+    createEscaleForm = EscaleForm()
 
     if vol:
         return render(request, "myapp/vol_view.html", {
             "vol": vol,
-            "updateForm": updateForm
+            "escales": escales,
+            "updateForm": updateForm,
+            "escaleForm": createEscaleForm,
         })
+    
+@login_required
+@csrf_exempt
+def create_escale(request, vol_pk):
+    vol = get_object_or_404(Vol, pk=vol_pk)
 
+    if request.method == "POST":
+        form = EscaleForm(request.POST)
+        escale = form.save(commit=False)
+        escale.vol = vol
+        escale.save()
+
+    return redirect("vol_view", pk=vol_pk)
+
+@login_required
+@csrf_exempt
+def escale(request, pk):
+    escale = get_object_or_404(Escale, pk=pk)
+    
+    if request.method == "POST":
+
+        if request.POST.get("_method") == "DELETE":
+            escale.delete()
+            return redirect("vol_view", pk=escale.vol.pk)
+        
+        form = EscaleForm(request.POST, instance=escale)
+        form.save()
+
+    return redirect("vol_view", pk=escale.vol.pk)
 
 @login_required
 def avion(request):
+    pass
+
+def avion_view(request, pk):
+    # avion = Avion.object.get()
     pass
 
 @login_required

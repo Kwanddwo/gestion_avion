@@ -8,8 +8,10 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("vol", views.vol, name="vol"),
     path("vol/<int:pk>", views.vol_view, name="vol_view"),
+    path("escale/create/<int:vol_pk>", views.create_escale, name="create_escale"),
+    path("escale/<int:pk>", views.escale, name="escale"),
     path("avion", views.avion, name="avion"),
     path("rapport", views.rapport, name="rapport"),
     path("employe", views.employe, name="employe"),
-    path("ville", views.ville, name="ville")
+    path("ville", views.ville, name="ville"),
 ]

@@ -1,31 +1,50 @@
 {% extends "myapp/layout.html" %}
 
+{% block head %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createForm = document.getElementById('create-vol-form');
+            const createFormButton = document.getElementById('create-vol-button');
+            createFormButton.onclick = () => {
+                if (createForm.style.display == "none") {
+                    createForm.style.setProperty("display", "block");
+                    createFormButton.innerHTML = "Annuler";
+                } else {
+                    createForm.style.setProperty("display", "none");
+                    createFormButton.innerHTML = "Ajouter un vol";
+                }
+            }
+        })
+    </script>
+{% endblock %}
+
 {% block body %}
-    <form action="{% url 'vol' %}" method="post">
+    <form style="display: none;" id="create-vol-form" action="{% url 'vol' %}" method="post">
         {{ createForm }}
-        <input type="submit" value="Ajouter Vol">
+        <input type="submit" value="Ajouter">
     </form>
+    <button id="create-vol-button">Ajouter un vol</button>
 
     <h1>Vols</h1>
     <table>
         <table>
             <tr>
               <th>ID</th>
-              <th>Jours</th>
               <th>Départ</th>
               <th>Arrivé</th>
               <th>Durée</th>
+              <th>Jours</th>
             </tr>
             {% for vol in vols %}
-                <a href="{% url 'vol_view' vol.id %}"><tr>
+                <tr id="vol-info-{{vol.id}}" onclick="window.location.href='/vol/{{vol.id}}';" style="cursor: pointer;">
                     <td>{{vol.id}}</td>
-                    <td>{% for jour in vol.jours.all %}
-                        {{ jour }}
-                    {% endfor %}</td>
                     <td>{{vol.depart.nom}} à {{vol.heure_depart}}</td>
                     <td>{{vol.arrive.nom}}</td>
                     <td>{{vol.duree}}</td>
-                </tr></a>
+                    <td>{% for jour in vol.jours.all %}
+                        {{ jour }}
+                    {% endfor %}</td>
+                </tr>
             {% endfor %}
           </table>
     </table>
