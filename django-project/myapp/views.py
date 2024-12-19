@@ -166,6 +166,8 @@ def avion(request):
         "createForm": createForm,
     })
 
+@login_required
+@csrf_exempt
 def avion_view(request, pk):
     # avion = Avion.object.get()
     avion = get_object_or_404(Avion, pk=pk)    
