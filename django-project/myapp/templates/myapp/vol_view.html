@@ -74,7 +74,7 @@
             <li id="esc-{{esc.pk}}">
                 {{ esc }}
                 <a href="{% url 'escale' esc.pk %}">Modifier</a>
-                <form method="post" action="{% url 'escale' esc.pk %}">
+                <form style="display: inline" method="post" action="{% url 'escale' esc.pk %}">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="submit" value="Supprimer" />
                 </form>

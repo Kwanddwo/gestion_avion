@@ -148,8 +148,13 @@ def escale(request, pk):
         
         form = EscaleForm(request.POST, instance=escale)
         form.save()
-
-    return redirect("vol_view", pk=escale.vol.pk)
+        return redirect("vol_view", pk=escale.vol.pk)
+    
+    form = EscaleForm(instance=escale)
+    return render(request, "myapp/escale_edit.html", {
+        "escale": escale,
+        "form": form,
+    })
 
 @login_required
 def avion(request):

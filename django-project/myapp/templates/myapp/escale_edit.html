@@ -1,0 +1,10 @@
+{% extends "myapp/layout.html" %}
+
+{% block body %}
+    <h2>Modifier éscale n°{{escale.no_ord}} pour vol ID: {{vol.pk}}</h2>
+    <form method="post" action="{% url 'escale' escale.pk %}">
+        {{ form }}
+        <input type="submit" value="Modifier">
+    </form>
+    <a href="{% url 'vol_view' escale.vol.pk %}">Annuler</a>
+{% endblock %}
