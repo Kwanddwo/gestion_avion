@@ -1,0 +1,139 @@
+{% extends "myapp/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+<h1>Liste des Villes</h1>
+
+<!-- Bouton pour ajouter une ville -->
+<button class="btn btn-success" id="addVilleBtn">Ajouter une Ville</button>
+
+<!-- Table des villes -->
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Pays</th>
+            <th>Modifier</th>
+            <th>Supprimer</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ville in villes %}
+        <tr>
+            <td>{{ ville.nom }}</td>
+            <td>{{ ville.nom_pays }}</td>
+            <td>
+                <!-- Bouton Modifier -->
+                <button 
+                    class="btn btn-primary edit-btn" 
+                    data-id="{{ ville.id }}" 
+                    data-nom="{{ ville.nom }}" 
+                    data-nom_pays="{{ ville.nom_pays }}">
+                    Modifier
+                </button>
+            </td>
+            <td>
+                <!-- Bouton Supprimer -->
+                <button 
+                    class="btn btn-danger delete-btn" 
+                    data-id="{{ ville.id }}">
+                    Supprimer
+                </button>
+            </td>
+        </tr>
+        {% empty %}
+        <!-- Message lorsqu'il n'y a pas de ville -->
+        <tr><td colspan="4">Aucune ville trouvée.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal pour Modifier une Ville -->
+<div id="editVilleModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editVilleForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier Ville</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Champ caché pour l'ID de la ville -->
+                    <input type="hidden" id="ville-id" name="id" value="">
+                    <div class="mb-3">
+                        <label for="ville-nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="ville-nom" name="nom">
+                    </div>
+                    <div class="mb-3">
+                        <label for="ville-nom-pays" class="form-label">Pays</label>
+                        <input type="text" class="form-control" id="ville-nom-pays" name="nom_pays">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- Bouton pour enregistrer les modifications -->
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <!-- Bouton pour fermer le modal -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour Ajouter une Nouvelle Ville -->
+<div class="modal fade" id="addVilleModal" tabindex="-1" aria-labelledby="addVilleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addVilleModalLabel">Ajouter une nouvelle ville</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulaire pour ajouter une ville -->
+                <form id="addVilleForm">
+                    <div class="mb-3">
+                        <label for="new-ville-nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="new-ville-nom" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-ville-nom-pays" class="form-label">Pays</label>
+                        <input type="text" class="form-control" id="new-ville-nom-pays" name="nom_pays" required>
+                    </div>
+                    <!-- Champ caché pour le token CSRF -->
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <!-- Bouton pour soumettre le formulaire -->
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation pour la suppression -->
+<div class="modal" tabindex="-1" id="deleteVilleModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Message de confirmation pour la suppression -->
+                <p>Êtes-vous sûr de vouloir supprimer cette ville ?</p>
+            </div>
+            <div class="modal-footer">
+                <!-- Bouton pour annuler -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <!-- Bouton pour confirmer la suppression -->
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'myapp/ville.js' %}"></script>
+{% endblock %}

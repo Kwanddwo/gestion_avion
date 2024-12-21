@@ -1,0 +1,151 @@
+{% extends "myapp/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+<h1>Liste des Rapports</h1>
+
+<!-- Button to add new report -->
+<button class="btn btn-success" id="addReportBtn">Ajouter un Rapport</button>
+
+<!-- Table to display reports -->
+<table border="1">
+    <thead>
+        <tr>
+            <th>Avion</th>
+            <th>Texte</th>
+            <th>Heures de vol</th>
+            <th>Date</th>
+            <th>Modifier</th>
+            <th>Supprimer</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rapport in rapports %}
+        <tr>
+            <td>{{ rapport.avion.type_avion }}</td>  <!-- Show type_avion instead of nom -->
+            <td>{{ rapport.texte }}</td>
+            <td>{{ rapport.heures_vol }}</td>
+            <td>{{ rapport.date }}</td>
+            <td>
+                <button 
+                    class="btn btn-primary edit-btn" 
+                    data-id="{{ rapport.id }}" 
+                    data-texte="{{ rapport.texte }}" 
+                    data-heures_vol="{{ rapport.heures_vol }}"
+                    data-type_avion="{{ rapport.avion.type_avion }}"
+                    data-avion="{{ rapport.avion.id }}">  <!-- Store avion ID -->
+                    Modifier
+                </button>
+            </td>
+            <td>
+                <button 
+                    class="btn btn-danger delete-btn" 
+                    data-id="{{ rapport.id }}">
+                    Supprimer
+                </button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">Aucun rapport trouvé.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal for editing a report -->
+<div id="editReportModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editReportForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier Rapport</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="report-id" name="id">
+                    <input type="hidden" id="avion-type" name="type" value="{{ rapport.avion.type_avion }}">
+                    <div class="mb-3">
+                        <label for="report-avion" class="form-label">Avion</label>
+                        <select class="form-control" id="report-avion" name="avion">
+                            {% for avion in avions %}
+                            <option value="{{ avion.id }}">{{ avion.type_avion }}</option> <!-- Use type_avion -->
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="report-texte" class="form-label">Texte</label>
+                        <textarea class="form-control" id="report-texte" name="texte" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="report-heures_vol" class="form-label">Heures de vol</label>
+                        <input type="number" class="form-control" id="report-heures_vol" name="heures_vol">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for adding a new report -->
+<div class="modal fade" id="addReportModal" tabindex="-1" aria-labelledby="addReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addReportModalLabel">Ajouter un rapport</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addReportForm">
+                    <div class="mb-3">
+                        <label for="new-report-avion" class="form-label">Avion</label>
+                        <select class="form-control" id="new-report-avion" name="avion">
+                            {% for avion in avions %}
+                            <option value="{{ avion.id }}">{{ avion.type_avion }}</option>  <!-- Use type_avion -->
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-report-texte" class="form-label">Texte</label>
+                        <textarea class="form-control" id="new-report-texte" name="texte" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-report-heures_vol" class="form-label">Heures de vol</label>
+                        <input type="number" class="form-control" id="new-report-heures_vol" name="heures_vol" required>
+                    </div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for confirming deletion -->
+<div class="modal" tabindex="-1" id="deleteReportModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer ce rapport ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'myapp/rapports.js' %}"></script>
+{% endblock %}

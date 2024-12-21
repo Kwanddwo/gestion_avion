@@ -1,0 +1,140 @@
+{% extends "myapp/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+<h1>Liste des Employés Non Navigants</h1>
+
+ <!-- Bouton pour ajouter un employé -->
+ <button class="btn btn-success" id="addEmployeeBtn">Ajouter un Employé</button>
+
+<!-- Table des employés -->
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Modifier</th>
+            <th>Supprimer</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employe in employes %}
+        <tr>
+            <td>{{ employe.nom }}</td>
+            <td>{{ employe.prenom }}</td>
+            <td>
+                <!-- Bouton Modifier -->
+                <button 
+                    class="btn btn-primary edit-btn" 
+                    data-id="{{ employe.id }}" 
+                    data-nom="{{ employe.nom }}" 
+                    data-prenom="{{ employe.prenom }}">
+                    Modifier
+                </button>
+            </td>
+            <td>
+                <!-- Bouton Supprimer -->
+                <button 
+                    class="btn btn-danger delete-btn" 
+                    data-id="{{ employe.id }}">
+                    Supprimer
+                </button>
+            </td>
+        </tr>
+        {% empty %}
+        <!-- Message lorsqu'il n'y a pas d'employé -->
+        <tr><td colspan="3">Aucun employé non navigant trouvé.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal pour Modifier un Employé -->
+<div id="editEmployeeModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editEmployeeForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier Employé</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Champ caché pour l'ID de l'employé -->
+                    <input type="hidden" id="employee-id" name="id" value="{{ employe.id }}">
+                    <div class="mb-3">
+                        <label for="employee-nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="employee-nom" name="nom">
+                    </div>
+                    <div class="mb-3">
+                        <label for="employee-prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="employee-prenom" name="prenom">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- Bouton pour enregistrer les modifications -->
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <!-- Bouton pour fermer le modal -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour Ajouter un Nouvel Employé -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEmployeeModalLabel">Ajouter un nouvel employé</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulaire pour ajouter un employé -->
+                <form id="addEmployeeForm">
+                    <div class="mb-3">
+                        <label for="new-employee-nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="new-employee-nom" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-employee-prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="new-employee-prenom" name="prenom" required>
+                    </div>
+                    <!-- Champ caché pour le token CSRF -->
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <!-- Bouton pour soumettre le formulaire -->
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation pour la suppression -->
+<div class="modal" tabindex="-1" id="deleteEmployeeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Message de confirmation pour la suppression -->
+                <p>Êtes-vous sûr de vouloir supprimer cet employé ?</p>
+            </div>
+            <div class="modal-footer">
+                <!-- Bouton pour annuler -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <!-- Bouton pour confirmer la suppression -->
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'myapp/employe.js' %}"></script>
+{% endblock %}
+

@@ -1,0 +1,176 @@
+{% extends "myapp/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+<h1>Liste des Employés Navigants</h1>
+
+<!-- Bouton pour ajouter un employé navigant -->
+<button class="btn btn-success" id="addNavigantBtn">Ajouter un Employé Navigant</button>
+
+<!-- Table des employés navigants -->
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Date d'embauche</th>
+            <th>Avions</th>
+            <th>Heures Vol T</th>
+            <th>Heures Vol M</th>
+            <th>Modifier</th>
+            <th>Supprimer</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employe_navigant in employes_navigants %}
+        <tr>
+            <td>{{ employe_navigant.employe.nom }}</td>
+            <td>{{ employe_navigant.employe.prenom }}</td>
+            <td>{{ employe_navigant.employe.date_embauche }}</td>
+            <td>
+                {% for avion in employe_navigant.avions.all %}
+                    {{ avion.type_avion }}<br>
+                {% endfor %}
+            </td>
+            <td>{{ employe_navigant.heures_vol }}</td>
+            <td>{{ employe_navigant.heures_mois_vol }}</td>
+            <td>
+                <!-- Bouton Modifier -->
+                <button class="btn btn-primary edit-btn" data-id="{{ employe_navigant.id }}"
+                        data-nom="{{ employe_navigant.employe.nom }}"
+                        data-prenom="{{ employe_navigant.employe.prenom }}"
+                        data-date_embauche="{{ employe_navigant.employe.date_embauche }}"
+                        data-heures_vol="{{ employe_navigant.heures_vol }}"
+                        data-heures_mois_vol="{{ employe_navigant.heures_mois_vol }}"
+                        data-avions="{{ employe_navigant.avions.all|join:", " }}">
+                    Modifier
+                </button>
+            </td>
+            <td>
+                <!-- Bouton Supprimer -->
+                <button class="btn btn-danger delete-btn" data-id="{{ employe_navigant.id }}">
+                    Supprimer
+                </button>
+            </td>
+        </tr>
+        {% empty %}
+        <!-- Message lorsqu'il n'y a pas d'employé navigant -->
+        <tr><td colspan="8">Aucun employé navigant trouvé.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal pour Modifier un Employé Navigant -->
+<div id="editNavigantModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editNavigantForm" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier Employé Navigant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="navigant-id" name="id">
+
+                    <div class="mb-3">
+                        <label for="navigant-nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="navigant-nom" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="navigant-prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="navigant-prenom" name="prenom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="navigant-heures_vol" class="form-label">Heures Vol Total</label>
+                        <input type="number" class="form-control" id="navigant-heures_vol" name="heures_vol" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="navigant-heures_mois_vol" class="form-label">Heures Vol Mois</label>
+                        <input type="number" class="form-control" id="navigant-heures_mois_vol" name="heures_mois_vol" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="navigant-avions" class="form-label">Avions Assignés</label>
+                        <select multiple class="form-control" id="navigant-avions" name="avions">
+                            {% for avion in avions %}
+                                <option value="{{ avion.id }}">{{ avion.type_avion }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour Ajouter un Employé Navigant -->
+<div class="modal fade" id="addNavigantModal" tabindex="-1" aria-labelledby="addNavigantModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNavigantModalLabel">Ajouter un Employé Navigant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addNavigantForm">
+                    <div class="mb-3">
+                        <label for="new-navigant-nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="new-navigant-nom" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-navigant-prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="new-navigant-prenom" name="prenom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-navigant-heures_vol" class="form-label">Heures Vol Total</label>
+                        <input type="number" class="form-control" id="new-navigant-heures_vol" name="heures_vol" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-navigant-heures_mois_vol" class="form-label">Heures Vol Mois</label>
+                        <input type="number" class="form-control" id="new-navigant-heures_mois_vol" name="heures_mois_vol" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-navigant-avions" class="form-label">Avions Assignés</label>
+                        <select multiple class="form-control" id="new-navigant-avions" name="avions">
+                            {% for avion in avions %}
+                                <option value="{{ avion.id }}">{{ avion.type_avion }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation pour la suppression -->
+<div class="modal" tabindex="-1" id="deleteNavigantModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cet employé navigant ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'myapp/navigant.js' %}"></script>
+{% endblock %}
