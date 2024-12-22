@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.core.exceptions import ValidationError
+import datetime
 
 from .models import User, Vol, Escale, Avion, Employe, EmployeNavigant, Rapport, Ville
 from .forms import VolForm, EscaleForm, AvionForm, EmployeForm, EmployeNavigantForm, RapportForm, VilleForm
@@ -199,8 +200,9 @@ def employe(request):
 
     if request.method == "POST":
         createForm = EmployeForm(request.POST)
-        if createForm.is_valid():
-            createForm.save()
+        employe = createForm.save()
+        if employe.is_navigant:
+            EmployeNavigant.objects.create(employe=employe)
 
     employes = Employe.objects.all()
     return render(request, "myapp/employes.html", {
@@ -225,25 +227,15 @@ def employe_view(request, pk):
     else:
         updateForm = EmployeForm(instance=employe)
 
+    if employe.is_navigant:
+        empNav = EmployeNavigant.objects.get(employe=employe)
+        updateNavigantForm = EmployeNavigantForm(instance=empNav)
+
     return render(request, "myapp/employe_view.html", {
         "employe": employe,
-        "updateForm": updateForm
-    })
-
-@login_required
-@csrf_exempt
-def employe_navigant(request):
-    createForm = EmployeNavigantForm()
-
-    if request.method == "POST":
-        createForm = EmployeNavigantForm(request.POST)
-        if createForm.is_valid():
-            createForm.save()
-    
-    employe_navigants = EmployeNavigant.objects.all()
-    return render(request, "myapp/employe_navigant.html", {
-        "employe_navigants": employe_navigants,
-        "createForm": createForm
+        "updateForm": updateForm,
+        "updateNavigantForm": updateNavigantForm if employe.is_navigant else "",
+        "employe_navigant": empNav if employe.is_navigant else "", 
     })
 
 @login_required
@@ -252,20 +244,11 @@ def employe_navigant_view(request, pk):
     employe_navigant = get_object_or_404(EmployeNavigant, employe__pk=pk)
 
     if request.method == "POST":
-        if request.POST.get("_method") == "DELETE":
-            employe_navigant.delete()
-            return redirect("employe_navigant")
-
         updateForm = EmployeNavigantForm(request.POST, instance=employe_navigant)
         if updateForm.is_valid():
             updateForm.save()
-    else:
-        updateForm = EmployeNavigantForm(instance=employe_navigant)
-
-    return render(request, "myapp/employe_navigant_view.html", {
-        "employe_navigant": employe_navigant,
-        "updateForm": updateForm
-    })
+    
+    return redirect("employe_view", pk)
 
 @login_required
 @csrf_exempt
@@ -275,7 +258,13 @@ def rapport(request):
     if request.method == "POST":
         createForm = RapportForm(request.POST)
         if createForm.is_valid():
-            createForm.save()
+            form = createForm.save(commit=False)
+            av = form.avion
+            form.heures_vol = av.heures_vol
+            av.heures_vol_der_rev = 0
+            av.date_der_rev = datetime.date.today()
+            av.save()
+            form.save()
 
     rapports = Rapport.objects.all()
     return render(request, "myapp/rapports.html", {

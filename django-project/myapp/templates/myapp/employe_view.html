@@ -17,6 +17,20 @@
                     button.innerHTML = "Modifier";
                 }
             }
+            const navigantForm = document.getElementById("update-navigant-form");
+            const navigantInfo = document.getElementById("employe-navigant-info");
+            const navigantButton = document.getElementById("update-navigant-button");
+            navigantButton.onclick = () => {
+                if (navigantForm.style.display == "none") {
+                    navigantForm.style.setProperty("display", "block");
+                    navigantInfo.style.setProperty("display", "none");
+                    navigantButton.innerHTML = "Annuler";
+                } else {
+                    navigantForm.style.setProperty("display", "none");
+                    navigantInfo.style.setProperty("display", "block");
+                    navigantButton.innerHTML = "Modifier";
+                }
+            }
         })
     </script>
 {% endblock %}
@@ -43,4 +57,26 @@
         <input type="hidden" name="_method" value="DELETE">
         <input type="submit" value="Supprimer" />
     </form>
+    {% if employe.is_navigant and employe_navigant %}
+        <h1>Info du navigation:</h1>
+        <div id="employe-navigant-info">
+            <p>Avions:</p>
+            <ul>
+                {% for avion in employe_navigant.avions.all %}
+                    <li>{{ avion }}</li>
+                {% endfor %}
+            </ul>
+            <p>Heures de vol: {{ employe_navigant.heures_vol }}</p>
+            <p>Heures de vol par moins: {{ employe_navigant.heures_mois_vol }}</p>
+
+        </div>
+
+        <form style="display: none;" id="update-navigant-form" action="{% url 'employe_navigant_view' employe.pk %}" method="post">
+            {% csrf_token %}
+            {{ updateNavigantForm }}
+            <input type="submit" value="Modifier">
+        </form>
+
+        <button id="update-navigant-button">Modifier</button>
+    {% endif %}
 {% endblock %}

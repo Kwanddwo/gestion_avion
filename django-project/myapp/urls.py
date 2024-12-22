@@ -14,7 +14,6 @@ urlpatterns = [
     path("avion/<int:pk>", views.avion_view, name="avion_view"),
     path('employe/', views.employe, name='employe'),
     path('employe/<int:pk>/', views.employe_view, name='employe_view'),
-    path('employe_navigant/', views.employe_navigant, name='employe_navigant'),
     path('employe_navigant/<int:pk>/', views.employe_navigant_view, name='employe_navigant_view'),
     path('rapport/', views.rapport, name='rapport'),
     path('rapport/<int:pk>/', views.rapport_view, name='rapport_view'),

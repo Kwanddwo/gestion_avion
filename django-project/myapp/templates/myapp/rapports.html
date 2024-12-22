@@ -37,7 +37,7 @@
         {% for rapport in rapports %}
             <tr id="rapport-info-{{ rapport.id }}" onclick="window.location.href='/rapport/{{ rapport.id }}';" style="cursor: pointer;">
                 <td>{{ rapport.pk }}</td>
-                <td>{{ rapport.avion.pk }}</td>
+                <td>{{ rapport.avion }}</td>
                 <td>{{ rapport.date }}</td>
                 <td>{{ rapport.heures_vol }}</td>
                 <td><form style="display: inline;" method="post" action="{% url 'rapport_view' rapport.pk %}">

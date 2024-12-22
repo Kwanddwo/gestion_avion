@@ -25,12 +25,12 @@ class EmployeForm(forms.ModelForm):
 class RapportForm(forms.ModelForm):
     class Meta:
         model = Rapport
-        fields = ['avion', 'texte', 'heures_vol']
+        fields = ['avion', 'texte']
 
 class EmployeNavigantForm(forms.ModelForm):
     class Meta:
         model = EmployeNavigant
-        fields = ['employe', 'avions', 'heures_vol', 'heures_mois_vol']
+        fields = ['avions', 'heures_vol', 'heures_mois_vol']
 
 class VilleForm(forms.ModelForm):
     class Meta:
