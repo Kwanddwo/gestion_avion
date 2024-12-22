@@ -39,7 +39,7 @@
             {% for avion in avions %}
                 <tr id="avion-info-{{avion.id}}" onclick="window.location.href='/avion/{{avion.id}}';" style="cursor: pointer;">
                     <td>{{avion.id}}</td>
-                    <td>{{avion.type}}</td>
+                    <td>{{avion.type_avion}}</td>
                     <td>{{avion.date_mise_service}}</td>
                     <td>{{avion.heures_vol}}</td>
                     <td>{{avion.heures_vol_der_rev}}</td>

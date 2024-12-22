@@ -91,13 +91,13 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'avion',  # Your database name
-            'USER': 'root',  # Your database username
-            'PASSWORD': 'assword!',  # Your database password
+            'NAME': 'mydb',  # Your database name
+            'USER': 'myuser',  # Your database username
+            'PASSWORD': 'mypassword',  # Your database password
             'HOST': 'localhost',  # For a local MySQL server
             'PORT': '3306',  # Default MySQL port
         }
-}
+    }
 
 AUTH_USER_MODEL = 'myapp.User'
 

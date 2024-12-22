@@ -1,0 +1,51 @@
+{% extends "myapp/layout.html" %}
+
+{% block head %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createForm = document.getElementById('create-rapport-form');
+            const createFormButton = document.getElementById('create-rapport-button');
+            createFormButton.onclick = () => {
+                if (createForm.style.display == "none") {
+                    createForm.style.setProperty("display", "block");
+                    createFormButton.innerHTML = "Annuler";
+                } else {
+                    createForm.style.setProperty("display", "none");
+                    createFormButton.innerHTML = "Ajouter un rapport";
+                }
+            }
+        })
+    </script>
+{% endblock %}
+
+{% block body %}
+    <form style="display: none;" id="create-rapport-form" action="{% url 'rapport' %}" method="post">
+        {% csrf_token %}
+        {{ createForm }}
+        <input type="submit" value="Ajouter">
+    </form>
+    <button id="create-rapport-button">Ajouter un rapport</button>
+
+    <h1>Liste des rapports</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Avion</th>
+            <th>Date</th>
+            <th>Heures de vol</th>
+        </tr>
+        {% for rapport in rapports %}
+            <tr id="rapport-info-{{ rapport.id }}" onclick="window.location.href='/rapport/{{ rapport.id }}';" style="cursor: pointer;">
+                <td>{{ rapport.pk }}</td>
+                <td>{{ rapport.avion.pk }}</td>
+                <td>{{ rapport.date }}</td>
+                <td>{{ rapport.heures_vol }}</td>
+                <td><form style="display: inline;" method="post" action="{% url 'rapport_view' rapport.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="submit" value="Supprimer" />
+                </form></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

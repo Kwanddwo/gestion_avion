@@ -7,8 +7,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 
-from .models import User, Vol, Escale, Avion
-from .forms import VolForm, EscaleForm, AvionForm
+from .models import User, Vol, Escale, Avion, Employe, EmployeNavigant, Rapport, Ville
+from .forms import VolForm, EscaleForm, AvionForm, EmployeForm, EmployeNavigantForm, RapportForm, VilleForm
 
 # TODO: remove csrf_exempt later
 
@@ -189,14 +189,155 @@ def avion_view(request, pk):
         })
     pass
 
-@login_required
-def rapport(request):
-    pass
 
 @login_required
+@csrf_exempt
+#change crete_form
+#change list
 def employe(request):
-    pass
+    createForm = EmployeForm()
+
+    if request.method == "POST":
+        createForm = EmployeForm(request.POST)
+        if createForm.is_valid():
+            createForm.save()
+
+    employes = Employe.objects.all()
+    return render(request, "myapp/employes.html", {
+        "employes": employes,
+        "createForm": createForm
+    })
 
 @login_required
+@csrf_exempt
+#change the root name
+def employe_view(request, pk):
+    employe = get_object_or_404(Employe, pk=pk)
+
+    if request.method == "POST":
+        if request.POST.get("_method") == "DELETE":
+            employe.delete()
+            return redirect("employe")
+
+        updateForm = EmployeForm(request.POST, instance=employe)
+        if updateForm.is_valid():
+            updateForm.save()
+    else:
+        updateForm = EmployeForm(instance=employe)
+
+    return render(request, "myapp/employe_view.html", {
+        "employe": employe,
+        "updateForm": updateForm
+    })
+
+@login_required
+@csrf_exempt
+def employe_navigant(request):
+    createForm = EmployeNavigantForm()
+
+    if request.method == "POST":
+        createForm = EmployeNavigantForm(request.POST)
+        if createForm.is_valid():
+            createForm.save()
+    
+    employe_navigants = EmployeNavigant.objects.all()
+    return render(request, "myapp/employe_navigant.html", {
+        "employe_navigants": employe_navigants,
+        "createForm": createForm
+    })
+
+@login_required
+@csrf_exempt
+def employe_navigant_view(request, pk):
+    employe_navigant = get_object_or_404(EmployeNavigant, employe__pk=pk)
+
+    if request.method == "POST":
+        if request.POST.get("_method") == "DELETE":
+            employe_navigant.delete()
+            return redirect("employe_navigant")
+
+        updateForm = EmployeNavigantForm(request.POST, instance=employe_navigant)
+        if updateForm.is_valid():
+            updateForm.save()
+    else:
+        updateForm = EmployeNavigantForm(instance=employe_navigant)
+
+    return render(request, "myapp/employe_navigant_view.html", {
+        "employe_navigant": employe_navigant,
+        "updateForm": updateForm
+    })
+
+@login_required
+@csrf_exempt
+def rapport(request):
+    createForm = RapportForm()
+
+    if request.method == "POST":
+        createForm = RapportForm(request.POST)
+        if createForm.is_valid():
+            createForm.save()
+
+    rapports = Rapport.objects.all()
+    return render(request, "myapp/rapports.html", {
+        "rapports": rapports,
+        "createForm": createForm
+    })
+
+@login_required
+@csrf_exempt
+def rapport_view(request, pk):
+    rapport = get_object_or_404(Rapport, pk=pk)
+
+    if request.method == "POST":
+        if request.POST.get("_method") == "DELETE":
+            rapport.delete()
+            return redirect("rapport")
+
+        updateForm = RapportForm(request.POST, instance=rapport)
+        if updateForm.is_valid():
+            updateForm.save()
+    else:
+        updateForm = RapportForm(instance=rapport)
+
+    return render(request, "myapp/rapport_view.html", {
+        "rapport": rapport,
+        "updateForm": updateForm
+    })
+
+
+@login_required
+@csrf_exempt
 def ville(request):
-    pass
+    createForm = VilleForm()
+
+    if request.method == "POST":
+        createForm = VilleForm(request.POST)
+        if createForm.is_valid():
+            createForm.save()
+
+    villes = Ville.objects.all()
+    return render(request, "myapp/ville.html", {
+        "villes": villes,
+        "createForm": createForm
+    })
+
+@login_required
+@csrf_exempt
+def ville_view(request, pk):
+    ville = get_object_or_404(Ville, pk=pk)
+
+    if request.method == "POST":
+        if request.POST.get("_method") == "DELETE":
+            ville.delete()
+            return redirect("ville")
+
+        updateForm = VilleForm(request.POST, instance=ville)
+        if updateForm.is_valid():
+            updateForm.save()
+    else:
+        updateForm = VilleForm(instance=ville)
+
+    return render(request, "myapp/ville_view.html", {
+        "ville": ville,
+        "updateForm": updateForm
+    })
