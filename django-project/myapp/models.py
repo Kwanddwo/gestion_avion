@@ -30,8 +30,8 @@ class Employe(models.Model):
     fonction = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=15)
     salaire = models.DecimalField(max_digits=10, decimal_places=2)
-    def __str__(self):
-        return f"{self.prenom} {self.nom} - {self.fonction} {"navigant" if self.is_navigant else "non-navigant"}"
+    #def __str__(self):
+        #return f"{self.prenom} {self.nom} - {self.fonction} {"navigant" if self.is_navigant else "non-navigant"}"
     
 
 class EmployeNavigant(models.Model):

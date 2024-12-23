@@ -1,0 +1,309 @@
+/* Importing the Plus Jakarta Sans font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* Resetting margins, padding, and box-sizing for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Defining color variables for easier theme management */
+:root {
+    --primary: #2563eb; /* Primary color for buttons, links */
+    --primary-dark: #1d4ed8; /* Darker shade for primary color */
+    --text: #0f172a; /* Main text color */
+    --text-light: #475569; /* Lighter text color */
+    --background: #ffffff; /* Background color */
+    --background-light: #f8fafc; /* Light background color for sections */
+}
+
+/* General body styling */
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Applying the imported font */
+    background-color: var(--background); /* Setting background color */
+    color: var(--text); /* Setting text color */
+    line-height: 1.6; /* Increasing line height for readability */
+}
+
+/* Container that holds content with a max-width of 1200px */
+.container {
+    max-width: 1290px;
+    margin: 0 auto; /* Centers the container */
+    padding: 0 2rem; /* Adds padding on both sides */
+}
+
+/* Navbar styling */
+.navbar {
+    position: fixed; /* Keeps the navbar at the top of the screen */
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Blurring the background behind navbar */
+    z-index: 1000; /* Ensures navbar stays on top of other content */
+    transition: all 0.3s ease; /* Smooth transition for background change */
+}
+
+/* Navbar background changes when scrolled */
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95); /* More opaque when scrolled */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+}
+
+/* Flex container for navbar content */
+.nav-container {
+    display: flex;
+    justify-content: space-between; /* Space between logo and nav links */
+    align-items: center;
+    height: 80px;
+}
+
+/* Logo styling */
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Logo icon design */
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--primary);
+    border-radius: 8px;
+}
+
+/* Navigation links styling */
+.nav-links {
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+}
+
+/* Individual navigation link styling */
+.nav-link {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+/* Underline effect on hover for navigation links */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+/* Expands the underline on hover */
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Call-to-action button style */
+.cta-button {
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+/* CTA button hover effect */
+.cta-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Hero section styling */
+.hero {
+    padding: 160px 0 100px; /* Adds vertical padding */
+    background: linear-gradient(to bottom right, #f8fafc 0%, #eff6ff 100%); /* Gradient background */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Grid layout for hero section */
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+/* Hero content styling */
+.hero-content {
+    max-width: 600px;
+}
+
+/* Badge for hero section */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Badge circle indicator */
+.hero-badge span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+/* Hero heading and text styling */
+.hero h1 {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    max-width: 500px;
+}
+
+/* Hero buttons layout */
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Secondary button styling */
+.secondary-button {
+    background: white;
+    color: var(--text);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Secondary button hover effect */
+.secondary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Hero image container styling */
+.hero-image {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Hero image settings */
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Floating cards within the hero image */
+.floating-card {
+    position: absolute;
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Position of the first floating card */
+.card-1 {
+    top: 10%;
+    left: -40px;
+}
+
+/* Position of the second floating card */
+.card-2 {
+    bottom: 10%;
+    right: -40px;
+    animation-delay: 1.5s; /* Staggered animation */
+}
+
+/* Icon style inside floating cards */
+.floating-card .icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    border-radius: 8px;
+}
+
+/* Text inside floating cards */
+.floating-card .text {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Animation for floating cards */
+@keyframes float {
+    0%, 100% { transform: translateY(0); } /* Start and end position */
+    50% { transform: translateY(-10px); } /* Move up in the middle of the animation */
+}
+
+/* Media query for responsive design on smaller screens */
+@media (max-width: 968px) {
+    .hero-grid {
+        grid-template-columns: 1fr; /* Single column layout on small screens */
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .hero-content {
+        margin: 0 auto; /* Center content */
+    }
+
+    .hero p {
+        margin: 0 auto 2rem; /* Center paragraph */
+    }
+
+    .hero-buttons {
+        justify-content: center; /* Center buttons */
+    }
+
+    .nav-links {
+        display: none; /* Hide navigation links on small screens */
+    }
+
+    .hero h1 {
+        font-size: 2.5rem; /* Reduce heading size on small screens */
+    }
+}

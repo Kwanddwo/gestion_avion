@@ -1,9 +1,33 @@
-{% extends "myapp/layout.html" %}
+{% extends 'myapp/layout.html' %}
+
+{% block title %}Home - Ensakh{% endblock %}
 
 {% block body %}
-
-    <a class="logout-link" href="{% url 'logout' %}">Log Out</a>
-    {% if request.user.is_authenticated %}
-        <h1>Welcome, {{ request.user.username }}!</h1>
-    {% endif %}
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span></span>
+                    Airport Management
+                </div>
+                <h1>Streamline Airport Operations with Innovation</h1>
+                <p>Adapted to emphasize tools for airport efficiency and passenger experience</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'login' %}" class="cta-button">Manage Flights</a>
+                    <a href="{% url 'register' %}" class="secondary-button">Explore Features</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.pexels.com/photos/2245279/pexels-photo-2245279.jpeg?auto=compress&cs=tinysrgb&w=600">
+                <div class="floating-card card-1">
+                    <div class="icon"></div>
+                    <div class="text">Efficient Scheduling</div>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="icon"></div>
+                    <div class="text">Passenger Insights</div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
