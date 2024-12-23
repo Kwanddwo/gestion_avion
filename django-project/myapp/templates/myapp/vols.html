@@ -27,6 +27,14 @@
     <button id="create-vol-button">Ajouter un vol</button>
 
     <h1>Vols</h1>
+    <div class="filter">
+        <h3>Filtre</h3>
+        <form method="get">
+            {{ filter.form.as_p }}
+            <input type="submit" value="Filter" />
+        </form>
+        <a href="{% url 'vol' %}">Annuler le filtre</a>
+    </div>
     <table>
         <table>
             <tr>
@@ -36,7 +44,7 @@
               <th>Durée</th>
               <th>Jours</th>
             </tr>
-            {% for vol in vols %}
+            {% for vol in filter.qs %}
                 <tr id="vol-info-{{vol.id}}" onclick="window.location.href='/vol/{{vol.id}}';" style="cursor: pointer;">
                     <td>{{vol.id}}</td>
                     <td>{{vol.depart.nom}} à {{vol.heure_depart}}</td>

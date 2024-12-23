@@ -8,8 +8,8 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 import datetime
 
-from .models import User, Vol, Escale, Avion, Employe, EmployeNavigant, Rapport, Ville
-from .forms import VolForm, EscaleForm, AvionForm, EmployeForm, EmployeNavigantForm, RapportForm, VilleForm
+from .models import *
+from .forms import *
 
 # TODO: remove csrf_exempt later
 
@@ -86,9 +86,9 @@ def vol(request):
         createForm = VolForm(request.POST)
         createForm.save()
     
-    vols = Vol.objects.all()
+    filter = VolFilter(request.GET, Vol.objects.all())
     return render(request, "myapp/vols.html", {
-        "vols": vols, 
+        "filter": filter, 
         "createForm": createForm,
     })
 
@@ -161,9 +161,9 @@ def avion(request):
         createForm = AvionForm(request.POST)
         createForm.save()
     
-    avions = Avion.objects.all()
+    filter = AvionFilter(request.GET, queryset=Avion.objects.all())
     return render(request, "myapp/avions.html", {
-        "avions": avions, 
+        "filter": filter, 
         "createForm": createForm,
     })
 
@@ -193,8 +193,6 @@ def avion_view(request, pk):
 
 @login_required
 @csrf_exempt
-#change crete_form
-#change list
 def employe(request):
     createForm = EmployeForm()
 
@@ -204,15 +202,14 @@ def employe(request):
         if employe.is_navigant:
             EmployeNavigant.objects.create(employe=employe)
 
-    employes = Employe.objects.all()
+    filter = EmployeFilter(request.GET, Employe.objects.all())
     return render(request, "myapp/employes.html", {
-        "employes": employes,
+        "filter": filter,
         "createForm": createForm
     })
 
 @login_required
 @csrf_exempt
-#change the root name
 def employe_view(request, pk):
     employe = get_object_or_404(Employe, pk=pk)
 
@@ -266,9 +263,9 @@ def rapport(request):
             av.save()
             form.save()
 
-    rapports = Rapport.objects.all()
+    filter = RapportFilter(request.GET, Rapport.objects.all())
     return render(request, "myapp/rapports.html", {
-        "rapports": rapports,
+        "filter": filter,
         "createForm": createForm
     })
 
@@ -304,9 +301,9 @@ def ville(request):
         if createForm.is_valid():
             createForm.save()
 
-    villes = Ville.objects.all()
+    filter = VilleFilter(request.GET, Ville.objects.all())
     return render(request, "myapp/ville.html", {
-        "villes": villes,
+        "filter": filter,
         "createForm": createForm
     })
 
