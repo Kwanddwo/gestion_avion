@@ -20,7 +20,7 @@ class AvionForm(forms.ModelForm):
 class EmployeForm(forms.ModelForm):
     class Meta:
         model = Employe
-        fields = ["is_navigant", "nom", "prenom", "fonction", "phone_number", "salaire"]
+        fields = ['is_navigant', 'nom', 'prenom', 'fonction', 'phone_number', 'salaire']
 
 class RapportForm(forms.ModelForm):
     class Meta:
@@ -57,6 +57,7 @@ class RapportFilter(django_filters.FilterSet):
             "heures_vol": ['gte', 'lte'],
             "date": ['gte', 'lte'],
         }
+
 
 
 class EmployeFilter(django_filters.FilterSet):

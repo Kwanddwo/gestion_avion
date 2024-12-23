@@ -6,58 +6,85 @@
             const createForm = document.getElementById('create-avion-form');
             const createFormButton = document.getElementById('create-avion-button');
             createFormButton.onclick = () => {
-                if (createForm.style.display == "none") {
-                    createForm.style.setProperty("display", "block");
-                    createFormButton.innerHTML = "Annuler";
+                if (createForm.style.display === "none") {
+                    createForm.style.display = "grid";
+                    createFormButton.textContent = "Annuler";
                 } else {
-                    createForm.style.setProperty("display", "none");
-                    createFormButton.innerHTML = "Ajouter un avion";
+                    createForm.style.display = "none";
+                    createFormButton.textContent = "Ajouter un avion";
                 }
             }
-        })
-    </script>
+
+            const filterForm = document.getElementById('filter-form');
+            const filterButton = document.getElementById('filter-button');
+            filterButton.onclick = () => {
+                if (filterForm.style.display === "none") {
+                    filterForm.style.display = "grid";
+                    filterButton.textContent = "Masquer le filtre";
+                } else {
+                    filterForm.style.display = "none";
+                    filterButton.textContent = "Filtrer les avions";
+                }
+            }
+        });
+    </script>    
 {% endblock %}
 
 {% block body %}
-    <form style="display: none;" id="create-avion-form" action="{% url 'avion' %}" method="post">
-        {{ createForm }}
-        <input type="submit" value="Ajouter">
-    </form>
-    <button id="create-avion-button">Ajouter un avion</button>
+    <div class="container form-container form">
 
-    <h1>Avions</h1>
-    <div class="filter">
-        <h3>Filtre</h3>
-        <form method="get">
-            {{ filter.form.as_p }}
-            <input type="submit" value="Filtrer" />
-        </form>
-        <a href="{% url 'avion' %}">Annuler le filtre</a> 
+        <!-- Ajouter Avion Form -->
+        <div class="card fade-in">
+            <button id="create-avion-button">Ajouter un avion</button>
+            <form id="create-avion-form" style="display: none;" method="post" action="{% url 'avion' %}">
+                {% csrf_token %}
+                {{ createForm.as_p }}
+                <button type="submit">Ajouter</button>
+            </form>
+        </div>
+
+        <!-- Filtrer Avion Form -->
+        <div class="card fade-in">
+            <button id="filter-button">Filtrer les avions</button>
+            <form id="filter-form" style="display: none;" method="get">
+                {{ filter.form.as_p }}
+                <button type="submit">Appliquer le filtre</button>
+            </form>
+        </div>
+
+        <div class="card fade-in table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Date Mise En Service</th>
+                        <th>Heures de vol</th>
+                        <th>Heures de vol dés dernière révision</th>
+                        <th>Date de la dernière révision</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for avion in filter.qs %}
+                        <tr class="fade-in" id="avion-info-{{ avion.id }}" onclick="window.location.href='/avion/{{ avion.id }}';" style="cursor: pointer;">
+                            <td>{{ avion.id }}</td>
+                            <td>{{ avion.type_avion }}</td>
+                            <td>{{ avion.date_mise_service }}</td>
+                            <td>{{ avion.heures_vol }}</td>
+                            <td>{{ avion.heures_vol_der_rev }}</td>
+                            <td>{{ avion.date_der_rev }}</td>
+                            <td>
+                                <form method="post" action="{% url 'avion_view' avion.pk %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="submit" value="Supprimer" class="delete-btn">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <table>
-        <table>
-            <tr>
-              <th>ID</th>
-              <th>Type</th>
-              <th>Date Mise En Service</th>
-              <th>Heures de vol</th>
-              <th>Heures de vol dés dernière révision</th>
-              <th>Date de la dernière révision</th>
-            </tr>
-            {% for avion in filter.qs %}
-                <tr id="avion-info-{{avion.id}}" onclick="window.location.href='/avion/{{avion.id}}';" style="cursor: pointer;">
-                    <td>{{avion.id}}</td>
-                    <td>{{avion.type_avion}}</td>
-                    <td>{{avion.date_mise_service}}</td>
-                    <td>{{avion.heures_vol}}</td>
-                    <td>{{avion.heures_vol_der_rev}}</td>
-                    <td>{{avion.date_der_rev}}</td>
-                    <td><form style="display: inline;" method="post" action="{% url 'avion_view' avion.pk %}">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="submit" value="Supprimer" />
-                    </form></td>
-                </tr>
-            {% endfor %}
-          </table>
-    </table>
 {% endblock %}
