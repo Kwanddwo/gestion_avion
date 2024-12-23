@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
         {% block title %}<title>myapp</title>{% endblock %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -13,6 +13,9 @@
         <div style="text-align: center;" class="nav-bar">
             <a href="{% url 'vol' %}">Vols</a>
             <a href="{% url 'avion' %}">Avions</a>
+            <a href="{% url 'employe' %}">Employés</a>
+            <a href="{% url 'rapport' %}">Rapports</a>
+            <a href="{% url 'ville' %}">Villes</a>
         </div>
         <div class='container'>
             <div class="body">

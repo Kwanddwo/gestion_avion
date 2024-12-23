@@ -27,6 +27,14 @@
     <button id="create-employe-button">Ajouter un employé</button>
 
     <h1>Liste des employés</h1>
+    <div class="filter">
+        <h3>Filtre</h3>
+        <form method="get">
+            {{ filter.form.as_p }}
+            <input type="submit" value="Filtrer" />
+        </form>
+        <a href="{% url 'employe' %}">Annuler le filtre</a> 
+    </div>
     <table>
         <tr>
             <th>ID</th>
@@ -37,7 +45,7 @@
             <th>Téléphone</th>
             <th>Salaire</th>
         </tr>
-        {% for employe in employes %}
+        {% for employe in filter.qs %}
             <tr id="employe-info-{{ employe.id }}" onclick="window.location.href='/employe/{{ employe.id }}';" style="cursor: pointer;">
                 <td>{{ employe.id }}</td>
                 <td>{{ employe.is_navigant|yesno:"Oui,Non" }}</td>

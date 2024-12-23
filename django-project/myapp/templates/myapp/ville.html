@@ -27,13 +27,21 @@
     <button id="create-ville-button">Ajouter une ville</button>
 
     <h1>Liste des Villes</h1>
+    <div class="filter">
+        <h3>Filtre</h3>
+        <form method="get">
+            {{ filter.form.as_p }}
+            <input type="submit" value="Filtrer" />
+        </form>
+        <a href="{% url 'ville' %}">Annuler le filtre</a> 
+    </div>
     <table>
         <tr>
             <th>ID</th>
             <th>Nom</th>
             <th>Nom du Pays</th>
         </tr>
-        {% for ville in villes %}
+        {% for ville in filter.qs %}
             <tr id="ville-info-{{ ville.id }}" onclick="window.location.href='/ville/{{ ville.id }}';" style="cursor: pointer;">
                 <td>{{ ville.id }}</td>
                 <td>{{ ville.nom }}</td>

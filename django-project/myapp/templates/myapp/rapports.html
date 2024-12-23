@@ -26,7 +26,15 @@
     </form>
     <button id="create-rapport-button">Ajouter un rapport</button>
 
-    <h1>Liste des rapports</h1>
+    <h1>Rapports</h1>
+    <div class="filter">
+        <h3>Filtre</h3>
+        <form method="get">
+            {{ filter.form.as_p }}
+            <input type="submit" value="Filtrer" />
+        </form>
+        <a href="{% url 'rapport' %}">Annuler le filtre</a> 
+    </div>
     <table>
         <tr>
             <th>ID</th>
@@ -34,7 +42,7 @@
             <th>Date</th>
             <th>Heures de vol</th>
         </tr>
-        {% for rapport in rapports %}
+        {% for rapport in filter.qs %}
             <tr id="rapport-info-{{ rapport.id }}" onclick="window.location.href='/rapport/{{ rapport.id }}';" style="cursor: pointer;">
                 <td>{{ rapport.pk }}</td>
                 <td>{{ rapport.avion }}</td>

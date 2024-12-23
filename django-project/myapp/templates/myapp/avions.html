@@ -26,6 +26,14 @@
     <button id="create-avion-button">Ajouter un avion</button>
 
     <h1>Avions</h1>
+    <div class="filter">
+        <h3>Filtre</h3>
+        <form method="get">
+            {{ filter.form.as_p }}
+            <input type="submit" value="Filtrer" />
+        </form>
+        <a href="{% url 'avion' %}">Annuler le filtre</a> 
+    </div>
     <table>
         <table>
             <tr>
@@ -36,7 +44,7 @@
               <th>Heures de vol dés dernière révision</th>
               <th>Date de la dernière révision</th>
             </tr>
-            {% for avion in avions %}
+            {% for avion in filter.qs %}
                 <tr id="avion-info-{{avion.id}}" onclick="window.location.href='/avion/{{avion.id}}';" style="cursor: pointer;">
                     <td>{{avion.id}}</td>
                     <td>{{avion.type_avion}}</td>

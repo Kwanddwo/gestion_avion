@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'django_filters',
     # my app
     'myapp'
 ]
@@ -92,8 +93,8 @@ DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'mydb',  # Your database name
-            'USER': 'myuser',  # Your database username
-            'PASSWORD': 'mypassword',  # Your database password
+            'USER': 'root',  # Your database username
+            'PASSWORD': 'assword!',  # Your database password
             'HOST': 'localhost',  # For a local MySQL server
             'PORT': '3306',  # Default MySQL port
         }
