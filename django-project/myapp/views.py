@@ -19,6 +19,9 @@ def index(request):
 
 @csrf_exempt
 def login_view(request):
+    if request.user.is_authenticated:
+        redirect('index')
+        
     if request.method == "POST":
 
         # Attempt to sign user in
