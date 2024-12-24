@@ -34,12 +34,14 @@
     </div>
 
     <form style="display: none;" id="update-form" action="{% url 'avion_view' avion.pk %}" method="post">
+        {% csrf_token %}
         {{ updateForm }}
         <input type="submit" value="Modifier avion">
     </form>
 
     <button id="update-button">Modifier avion</button>
     <form method="post" action="{% url 'avion_view' avion.pk %}">
+        {% csrf_token %}
         <input type="hidden" name="_method" value="DELETE">
         <input type="submit" value="Supprimer" />
     </form>

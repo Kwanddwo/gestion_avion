@@ -47,9 +47,14 @@
         <div class="card fade-in">
             <button id="filter-button">Filtrer les employés</button>
             <form id="filter-form" style="display: none;" method="get">
-                {% csrf_token %}
                 {{ filter.form.as_p }}
                 <button type="submit">Appliquer le filtre</button>
+            </form>
+        </div>
+
+        <div class="card fade-in">
+            <form action="{% url 'employe' %}" method="get">
+                <button type="submit">Annuler le filtre</button>
             </form>
         </div>
 

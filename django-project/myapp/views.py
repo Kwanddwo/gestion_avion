@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import ValidationError
@@ -13,7 +12,6 @@ from .forms import *
 def index(request):
     return render(request, 'myapp/index.html')
 
-@csrf_exempt
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('index')
@@ -41,7 +39,6 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
-@csrf_exempt
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -77,7 +74,6 @@ def register(request):
     return render(request, "myapp/register.html")
 
 @login_required
-@csrf_exempt
 def vol(request):
     createForm = VolForm()
 
@@ -92,7 +88,6 @@ def vol(request):
     })
 
 @login_required
-@csrf_exempt
 def vol_view(request, pk):
     vol = get_object_or_404(Vol, pk=pk)    
 
@@ -117,7 +112,6 @@ def vol_view(request, pk):
     })
     
 @login_required
-@csrf_exempt
 def create_escale(request, vol_pk):
     vol = get_object_or_404(Vol, pk=vol_pk)
 
@@ -132,7 +126,6 @@ def create_escale(request, vol_pk):
     return redirect("vol_view", pk=vol_pk)
 
 @login_required
-@csrf_exempt
 def escale(request, pk):
     escale = get_object_or_404(Escale, pk=pk)
     
@@ -152,7 +145,6 @@ def escale(request, pk):
     })
 
 @login_required
-@csrf_exempt
 def avion(request):
     createForm = AvionForm()
 
@@ -167,7 +159,6 @@ def avion(request):
     })
 
 @login_required
-@csrf_exempt
 def avion_view(request, pk):
     # avion = Avion.object.get()
     avion = get_object_or_404(Avion, pk=pk)    
@@ -191,7 +182,6 @@ def avion_view(request, pk):
 
 
 @login_required
-@csrf_exempt
 def employe(request):
     createForm = EmployeForm()
 
@@ -208,7 +198,6 @@ def employe(request):
     })
 
 @login_required
-@csrf_exempt
 def employe_view(request, pk):
     employe = get_object_or_404(Employe, pk=pk)
 
@@ -235,7 +224,6 @@ def employe_view(request, pk):
     })
 
 @login_required
-@csrf_exempt
 def employe_navigant_view(request, pk):
     employe_navigant = get_object_or_404(EmployeNavigant, employe__pk=pk)
 
@@ -247,7 +235,6 @@ def employe_navigant_view(request, pk):
     return redirect("employe_view", pk)
 
 @login_required
-@csrf_exempt
 def rapport(request):
     createForm = RapportForm()
 
@@ -268,7 +255,6 @@ def rapport(request):
     })
 
 @login_required
-@csrf_exempt
 def rapport_view(request, pk):
     rapport = get_object_or_404(Rapport, pk=pk)
 
@@ -290,7 +276,6 @@ def rapport_view(request, pk):
 
 
 @login_required
-@csrf_exempt
 def ville(request):
     createForm = VilleForm()
 
@@ -306,7 +291,6 @@ def ville(request):
     })
 
 @login_required
-@csrf_exempt
 def ville_view(request, pk):
     ville = get_object_or_404(Ville, pk=pk)
 

@@ -3,6 +3,7 @@
 {% block body %}
     <h2>Modifier éscale n°{{escale.no_ord}} pour vol ID: {{vol.pk}}</h2>
     <form method="post" action="{% url 'escale' escale.pk %}">
+        {% csrf_token %}
         {{ form }}
         <input type="submit" value="Modifier">
     </form>
