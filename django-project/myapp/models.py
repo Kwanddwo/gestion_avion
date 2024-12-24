@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import RegexValidator
 
 class User(AbstractUser):
     pass
@@ -28,7 +29,7 @@ class Employe(models.Model):
     prenom = models.CharField(max_length=50)
     date_embauche = models.DateField(auto_now_add=True, editable=False)
     fonction = models.CharField(max_length=50)
-    phone_number = models.CharField(max_length=15)
+    phone_number = models.CharField(max_length=15, validators=[RegexValidator("^[\d\s+\-]+$")])
     salaire = models.DecimalField(max_digits=10, decimal_places=2)
     #def __str__(self):
         #return f"{self.prenom} {self.nom} - {self.fonction} {"navigant" if self.is_navigant else "non-navigant"}"
