@@ -13,15 +13,14 @@ from .forms import *
 
 # TODO: remove csrf_exempt later
 
-@login_required
 def index(request):
     return render(request, 'myapp/index.html')
 
 @csrf_exempt
 def login_view(request):
     if request.user.is_authenticated:
-        redirect('index')
-        
+        return redirect('index')
+
     if request.method == "POST":
 
         # Attempt to sign user in

@@ -1,5 +1,7 @@
+/* Importing the Plus Jakarta Sans font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
+/* Resetting margins, padding, and box-sizing for all elements */
 * {
     margin: 0;
     padding: 0;
@@ -8,49 +10,51 @@
 
 /* Defining color variables for easier theme management */
 :root {
-    --primary: #2563eb;
-    --primary-dark: #1d4ed8;
-    --text: #0f172a;
-    --text-light: #475569;
-    --background: #ffffff;
-    --background-light: #f8fafc;
+    --primary: #2563eb; /* Primary color for buttons, links */
+    --primary-dark: #1d4ed8; /* Darker shade for primary color */
+    --text: #0f172a; /* Main text color */
+    --text-light: #475569; /* Lighter text color */
+    --background: #ffffff; /* Background color */
+    --background-light: #f8fafc; /* Light background color for sections */
 }
 
 /* General body styling */
 body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: var(--background);
-    color: var(--text);
-    line-height: 1.6;
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Applying the imported font */
+    background-color: var(--background); /* Setting background color */
+    color: var(--text); /* Setting text color */
+    line-height: 1.6; /* Increasing line height for readability */
 }
 
 /* Container that holds content with a max-width of 1200px */
 .container {
     max-width: 1290px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    margin: 0 auto; /* Centers the container */
+    padding: 0 2rem; /* Adds padding on both sides */
 }
 
 /* Navbar styling */
 .navbar {
-    position: fixed;
+    position: fixed; /* Keeps the navbar at the top of the screen */
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Blurring the background behind navbar */
+    z-index: 1000; /* Ensures navbar stays on top of other content */
+    transition: all 0.3s ease; /* Smooth transition for background change */
 }
 
+/* Navbar background changes when scrolled */
 .navbar.scrolled {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95); /* More opaque when scrolled */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
 }
 
+/* Flex container for navbar content */
 .nav-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space between logo and nav links */
     align-items: center;
     height: 80px;
 }
@@ -66,6 +70,7 @@ body {
     gap: 0.5rem;
 }
 
+/* Logo icon design */
 .logo-icon {
     width: 32px;
     height: 32px;
@@ -80,15 +85,17 @@ body {
     align-items: center;
 }
 
+/* Individual navigation link styling */
 .nav-link {
     color: var(--text);
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
-    position: relative;
     transition: color 0.3s ease;
+    position: relative;
 }
 
+/* Underline effect on hover for navigation links */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -100,6 +107,7 @@ body {
     transition: width 0.3s ease;
 }
 
+/* Expands the underline on hover */
 .nav-link:hover::after {
     width: 100%;
 }
@@ -116,6 +124,7 @@ body {
     transition: all 0.3s ease;
 }
 
+/* CTA button hover effect */
 .cta-button:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
@@ -123,12 +132,13 @@ body {
 
 /* Hero section styling */
 .hero {
-    padding: 120px 0 100px;
-    background: linear-gradient(to bottom right, #f8fafc 0%, #eff6ff 100%);
+    padding: 160px 0 100px; /* Adds vertical padding */
+    background: linear-gradient(to bottom right, #f8fafc 0%, #eff6ff 100%); /* Gradient background */
     position: relative;
     overflow: hidden;
 }
 
+/* Grid layout for hero section */
 .hero-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -136,10 +146,12 @@ body {
     align-items: center;
 }
 
+/* Hero content styling */
 .hero-content {
     max-width: 600px;
 }
 
+/* Badge for hero section */
 .hero-badge {
     display: inline-flex;
     align-items: center;
@@ -153,6 +165,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* Badge circle indicator */
 .hero-badge span {
     display: inline-block;
     width: 20px;
@@ -162,6 +175,7 @@ body {
     margin-right: 0.5rem;
 }
 
+/* Hero heading and text styling */
 .hero h1 {
     font-size: 3.5rem;
     line-height: 1.2;
@@ -176,11 +190,13 @@ body {
     max-width: 500px;
 }
 
+/* Hero buttons layout */
 .hero-buttons {
     display: flex;
     gap: 1rem;
 }
 
+/* Secondary button styling */
 .secondary-button {
     background: white;
     color: var(--text);
@@ -193,11 +209,13 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* Secondary button hover effect */
 .secondary-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Hero image container styling */
 .hero-image {
     position: relative;
     width: 100%;
@@ -208,12 +226,14 @@ body {
     overflow: hidden;
 }
 
+/* Hero image settings */
 .hero-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
+/* Floating cards within the hero image */
 .floating-card {
     position: absolute;
     background: white;
@@ -226,17 +246,20 @@ body {
     animation: float 3s ease-in-out infinite;
 }
 
+/* Position of the first floating card */
 .card-1 {
     top: 10%;
     left: -40px;
 }
 
+/* Position of the second floating card */
 .card-2 {
     bottom: 10%;
     right: -40px;
-    animation-delay: 1.5s;
+    animation-delay: 1.5s; /* Staggered animation */
 }
 
+/* Icon style inside floating cards */
 .floating-card .icon {
     width: 40px;
     height: 40px;
@@ -244,233 +267,43 @@ body {
     border-radius: 8px;
 }
 
+/* Text inside floating cards */
 .floating-card .text {
     font-size: 0.9rem;
     font-weight: 500;
 }
 
+/* Animation for floating cards */
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%, 100% { transform: translateY(0); } /* Start and end position */
+    50% { transform: translateY(-10px); } /* Move up in the middle of the animation */
 }
 
 /* Media query for responsive design on smaller screens */
 @media (max-width: 968px) {
     .hero-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Single column layout on small screens */
         text-align: center;
         gap: 2rem;
     }
 
-    .hero-content,
+    .hero-content {
+        margin: 0 auto; /* Center content */
+    }
+
     .hero p {
-        margin: 0 auto;
+        margin: 0 auto 2rem; /* Center paragraph */
     }
 
     .hero-buttons {
-        justify-content: center;
+        justify-content: center; /* Center buttons */
     }
 
     .nav-links {
-        display: none;
+        display: none; /* Hide navigation links on small screens */
     }
 
     .hero h1 {
-        font-size: 2.5rem;
-    }
-}
-
-
-/* Form container styles */
-.form-container {
-    padding: 120px 0 80px;
-}
-
-.form form {
-    display: grid;
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-.form label {
-    font-weight: 600;
-    color: var(--text);
-    font-size: 1rem;
-}
-
-.form input[type="text"],
-.form input[type="number"],
-.form input[type="checkbox"],
-.form select {
-    width: 100%;
-    padding: 0.8rem;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-    appearance: none; 
-}
-
-/* Hover effect for input fields and select */
-.form input[type="text"]:hover,
-.form input[type="number"]:hover,
-.form input[type="checkbox"]:hover,
-.form select:hover {
-    border-color: var(--primary);
-}
-
-/* Checkbox-specific styles */
-.form input[type="checkbox"] {
-    width: auto;
-    margin-right: 0.5rem;
-}
-
-/* Additional styles for the select input */
-.form select {
-    background: url('data:image/svg+xml;utf8,<svg fill="black" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 0.8rem center/1.5rem; /* Custom arrow */
-    padding-right: 2.5rem; 
-    cursor: pointer;
-}
-
-.form button {
-    background: var(--primary);
-    color: var(--background);
-    border: none;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: block;
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-.form button:hover {
-    background: var(--primary-dark);
-    transform: scale(1.05);
-}
-
-/* Table container styles */
-.form .table-wrapper {
-    overflow-x: auto;
-}
-
-/* Table styles */
-.form table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 10px;
-    min-width: 800px;
-}
-
-.form th, .form td {
-    padding: 1rem;
-    text-align: left;
-    background: var(--background);
-    white-space: nowrap;
-    border: none; /* Remove borders */
-}
-
-.form th {
-    background: var(--primary);
-    color: var(--background);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.form tr {
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-}
-
-.form tr:hover {
-    transform: scale(1.02);
-}
-
-.form td:first-child, .form th:first-child {
-    border-radius: 10px 0 0 10px;
-}
-
-.form td:last-child, .form th:last-child {
-    border-radius: 0 10px 10px 0;
-}
-
-/* Delete button styles */
-.form .delete-btn {
-    background: #2c53ff;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 4px rgba(105, 71, 255, 0.3);
-    margin: 0.5rem;
-    display: inline-block;
-}
-
-.form .delete-btn:hover {
-    box-shadow: 0 4px 8px rgba(71, 83, 255, 0.4);
-}
-
-.form .delete-btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 2px rgba(255, 71, 87, 0.4);
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-    .form form {
-        gap: 0.8rem;
-    }
-
-    .form input[type="text"],
-    .form input[type="number"],
-    .form button {
-        font-size: 0.9rem;
-        padding: 0.7rem 1.2rem;
-    }
-
-    .form .table-wrapper {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    .form table {
-        width: 100%;
-        min-width: unset;
-        font-size: 0.75rem;
-    }
-
-    .form th, .form td {
-        padding: 0.4rem 0.3rem;
-        white-space: normal;
-    }
-
-    .delete-icon {
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .form table {
-        font-size: 0.7rem;
-    }
-
-    .form th, .form td {
-        padding: 0.3rem 0.2rem;
-    }
-
-    .form td[data-label="Date"],
-    .form td[data-label="Description"] {
-        max-width: 80px;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        font-size: 2.5rem; /* Reduce heading size on small screens */
     }
 }
