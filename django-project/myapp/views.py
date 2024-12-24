@@ -73,7 +73,6 @@ def register(request):
 
     return render(request, "myapp/register.html")
 
-@login_required
 def vol(request):
     createForm = VolForm()
 
@@ -87,7 +86,6 @@ def vol(request):
         "createForm": createForm,
     })
 
-@login_required
 def vol_view(request, pk):
     vol = get_object_or_404(Vol, pk=pk)    
 

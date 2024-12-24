@@ -1,6 +1,8 @@
 {% extends "myapp/layout.html" %}
 
+
 {% block head %}
+{% if request.user.is_authenticated %}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById("update-form");
@@ -31,6 +33,7 @@
             }
         })
     </script>
+{% endif %}
 {% endblock %}
 
 {% block body %}
@@ -48,6 +51,7 @@
         </ul>
     </div>
 
+    {% if request.user.is_authenticated %}
     <form style="display: none;" id="update-form" action="{% url 'vol_view' vol.pk %}" method="post">
         {% csrf_token %}
         {{ updateForm }}
@@ -62,14 +66,17 @@
     </form>
 
     <a href="{% url 'simulate_vol' vol.pk %}">Simuler Vol</a>
+    {% endif %}
 
     <h3>Escales :</h3>
+    {% if request.user.is_authenticated %}
     <button id="create-escale-button">Nouvelle Escale</button>
     <form id="create-escale-form" style="display: none" method="post" action="{% url 'create_escale' vol.id %}">
         {% csrf_token %}
         {{ escaleForm }}
         <input type="submit" value="Créer"/>
     </form>
+    {% endif %}
     {% if not escales %}
         <p>Ce vol n'a pas d'éscales</p>
     {% else %}
@@ -78,12 +85,14 @@
             {% for esc in escales %}
             <li id="esc-{{esc.pk}}">
                 {{ esc }}
+                {% if request.user.is_authenticated %}
                 <a href="{% url 'escale' esc.pk %}">Modifier</a>
                 <form style="display: inline" method="post" action="{% url 'escale' esc.pk %}">
                     {% csrf_token %}
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="submit" value="Supprimer" />
                 </form>
+                {% endif %}
             </li>
             {% endfor %}
         </ol>

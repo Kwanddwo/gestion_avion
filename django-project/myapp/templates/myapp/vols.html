@@ -32,7 +32,7 @@
 
 {% block body %}
     <div class="container form-container form">
-
+        {% if request.user.is_authenticated %}
         <!-- Ajouter Vol Form -->
         <div class="card fade-in">
             <button id="create-vol-button">Ajouter un vol</button>
@@ -57,6 +57,7 @@
                 <button type="submit">Annuler le filtre</button>
             </form>
         </div>
+        {% endif %}
 
         <div class="card fade-in table-wrapper">
             <table>
@@ -67,12 +68,13 @@
                         <th>Arrivé</th>
                         <th>Durée</th>
                         <th>Jours</th>
-                        <th>Actions</th>
+                        {% if request.user.is_authenticated %}<th>Actions</th>{%endif%}
                     </tr>
                 </thead>
                 <tbody>
                     {% for vol in filter.qs %}
-                        <tr class="fade-in" id="vol-info-{{ vol.id }}" onclick="window.location.href='/vol/{{ vol.id }}';" style="cursor: pointer;">
+                        <tr class="fade-in {%if vol.avion.est_interdit%}interdit{%endif%}" 
+                        id="vol-info-{{ vol.id }}" onclick="window.location.href='/vol/{{ vol.id }}';" style="cursor: pointer;">
                             <td>{{ vol.id }}</td>
                             <td>{{ vol.depart.nom }} à {{ vol.heure_depart }}</td>
                             <td>{{ vol.arrive.nom }}</td>
@@ -80,6 +82,7 @@
                             <td>{% for jour in vol.jours.all %}
                                 {{ jour }}
                             {% endfor %}</td>
+                            {% if request.user.is_authenticated %}
                             <td>
                                 <form method="post" action="{% url 'vol_view' vol.pk %}" style="display: inline;">
                                     {% csrf_token %}
@@ -87,6 +90,7 @@
                                     <input type="submit" value="Supprimer" class="delete-btn">
                                 </form>
                             </td>
+                            {%endif%}
                         </tr>
                     {% endfor %}
                 </tbody>
