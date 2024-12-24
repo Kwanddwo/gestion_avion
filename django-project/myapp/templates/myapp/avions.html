@@ -67,7 +67,8 @@
                 </thead>
                 <tbody>
                     {% for avion in filter.qs %}
-                        <tr class="fade-in" id="avion-info-{{ avion.id }}" onclick="window.location.href='/avion/{{ avion.id }}';" style="cursor: pointer;">
+                        <tr class="fade-in {%if avion.est_interdit%}interdit{%endif%}" 
+                        id="avion-info-{{ avion.id }}" onclick="window.location.href='/avion/{{ avion.id }}';" style="cursor: pointer;">
                             <td>{{ avion.id }}</td>
                             <td>{{ avion.type_avion }}</td>
                             <td>{{ avion.date_mise_service }}</td>

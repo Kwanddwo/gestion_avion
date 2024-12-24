@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import simulations
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -18,5 +19,8 @@ urlpatterns = [
     path('rapport/', views.rapport, name='rapport'),
     path('rapport/<int:pk>/', views.rapport_view, name='rapport_view'),
     path('ville/', views.ville, name='ville'),
-    path('ville/<int:pk>/', views.ville_view, name='ville_view')
+    path('ville/<int:pk>/', views.ville_view, name='ville_view'),
+
+    path('simulate/mois/', simulations.simulateMois, name="simulate_mois"),
+    path('simulate/vol/<int:pk>', simulations.simulateVol, name="simulate_vol"),
 ]

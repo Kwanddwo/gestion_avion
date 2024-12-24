@@ -335,7 +335,6 @@ border: 2px solid #ddd;
 border-radius: 8px;
 font-size: 1rem;
 transition: border-color 0.3s ease;
-appearance: none; 
 }
 
 /* Hover effect for input fields and select */
@@ -500,4 +499,8 @@ box-shadow: 0 1px 2px rgba(255, 71, 87, 0.4);
     overflow: hidden;
     text-overflow: ellipsis;
 }
+}
+
+.interdit {
+    outline: 2px solid rgb(223, 57, 57);
 }

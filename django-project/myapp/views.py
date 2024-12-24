@@ -2,11 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
 from django.core.exceptions import ValidationError
-import datetime
 
 from .models import *
 from .forms import *
@@ -260,8 +257,7 @@ def rapport(request):
             form = createForm.save(commit=False)
             av = form.avion
             form.heures_vol = av.heures_vol
-            av.heures_vol_der_rev = 0
-            av.date_der_rev = datetime.date.today()
+            av.rapport()
             av.save()
             form.save()
 

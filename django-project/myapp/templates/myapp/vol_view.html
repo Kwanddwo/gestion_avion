@@ -59,6 +59,8 @@
         <input type="submit" value="Supprimer Vol" />
     </form>
 
+    <a href="{% url 'simulate_vol' vol.pk %}">Simuler Vol</a>
+
     <h3>Escales :</h3>
     <button id="create-escale-button">Nouvelle Escale</button>
     <form id="create-escale-form" style="display: none" method="post" action="{% url 'create_escale' vol.id %}">

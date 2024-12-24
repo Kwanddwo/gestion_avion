@@ -1,16 +1,34 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator
+from datetime import date, timedelta
 
 class User(AbstractUser):
     pass
 
+MAX_DAYS = 30 * 6
+MAX_HEURES_VOL = 1000
 class Avion(models.Model):
     type_avion = models.CharField(max_length=4)
     date_mise_service = models.DateField(auto_now_add=True)
     heures_vol_der_rev = models.PositiveIntegerField(default=0)
     heures_vol = models.PositiveIntegerField(default=0)
     date_der_rev = models.DateField(null=True)
+    est_interdit = models.BooleanField(default=False)
+    def rapport(self):
+        self.heures_vol_der_rev = 0
+        self.date_der_rev = date.today()
+        self.est_interdit = False
+    def interdit(self):
+        if self.heures_vol_der_rev > MAX_HEURES_VOL or self.date_der_rev < date.today() - timedelta(days=MAX_DAYS):
+            self.est_interdit = True
+    def add_heures_vol(self, vol):
+        if not isinstance(vol, Vol):
+            raise TypeError("argument vol is not of type Vol")
+        heures_vol = int(vol.duree.total_seconds() / timedelta(hours=1).total_seconds())
+        self.heures_vol += heures_vol
+        self.heures_vol_der_rev += heures_vol
+        self.interdit()
     def __str__(self):
         return f"Avion {self.type_avion} (ID: {self.pk} Mise en service: {self.date_mise_service})"
 
@@ -29,10 +47,10 @@ class Employe(models.Model):
     prenom = models.CharField(max_length=50)
     date_embauche = models.DateField(auto_now_add=True, editable=False)
     fonction = models.CharField(max_length=50)
-    phone_number = models.CharField(max_length=15, validators=[RegexValidator("^[\d\s+\-]+$")])
+    phone_number = models.CharField(max_length=15, validators=[RegexValidator(r"^[\d\s+\-]+$")])
     salaire = models.DecimalField(max_digits=10, decimal_places=2)
-    #def __str__(self):
-        #return f"{self.prenom} {self.nom} - {self.fonction} {"navigant" if self.is_navigant else "non-navigant"}"
+    def __str__(self):
+        return f"{self.prenom} {self.nom} - {self.fonction} {"navigant" if self.is_navigant else "non-navigant"}"
     
 
 class EmployeNavigant(models.Model):
@@ -40,6 +58,12 @@ class EmployeNavigant(models.Model):
     employe = models.OneToOneField(Employe, on_delete=models.CASCADE, related_name="navigant", primary_key=True)
     heures_vol = models.PositiveIntegerField(default=0)
     heures_mois_vol = models.PositiveIntegerField(default=0)
+    def add_heures_vol(self, vol):
+        if not isinstance(vol, Vol):
+            raise TypeError("argument vol is not of type Vol")
+        heures_vol = int(vol.duree.total_seconds() / timedelta(hours=1).total_seconds())
+        self.heures_vol += heures_vol
+        self.heures_mois_vol += heures_vol
     def __str__(self):
         return f"Navigant {self.employe} - {self.heures_vol} heures de vol"
 

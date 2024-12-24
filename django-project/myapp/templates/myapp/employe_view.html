@@ -60,14 +60,18 @@
     {% if employe.is_navigant and employe_navigant %}
         <h1>Info du navigation:</h1>
         <div id="employe-navigant-info">
+            {% if employe_navigant.avions %}
             <p>Avions:</p>
             <ul>
                 {% for avion in employe_navigant.avions.all %}
                     <li>{{ avion }}</li>
                 {% endfor %}
             </ul>
+            {% else %}
+            <p>Cet employé n'est actuellement inscrit sur aucun équipage</p>
+            {% endif %}
             <p>Heures de vol: {{ employe_navigant.heures_vol }}</p>
-            <p>Heures de vol par moins: {{ employe_navigant.heures_mois_vol }}</p>
+            <p>Heures de vol par mois: {{ employe_navigant.heures_mois_vol }}</p>
 
         </div>
 

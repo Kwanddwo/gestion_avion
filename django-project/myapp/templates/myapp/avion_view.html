@@ -22,7 +22,9 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Avion ID: {{avion.pk}}</h1>
+    <h1>Avion ID: {{avion.pk}} 
+        {%if avion.est_interdit%}
+        <span style="color: crimson">INTERDIT</span>{%endif%}</h1>
     <div id="avion-info">
         <p>Type: {{avion.type_avion}}</p>
         <p>Date mise en service: {{avion.date_mise_service}}</p>
