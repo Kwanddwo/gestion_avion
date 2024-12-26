@@ -80,7 +80,7 @@
                             <td>{{ vol.arrive.nom }}</td>
                             <td>{{ vol.duree }}</td>
                             <td>{% for jour in vol.jours.all %}
-                                {{ jour }}
+                                <span class="jour" style="display:inline-block">{{ jour }}</span>
                             {% endfor %}</td>
                             {% if request.user.is_authenticated %}
                             <td>

@@ -10,7 +10,7 @@ MAX_DAYS = 30 * 6
 MAX_HEURES_VOL = 1000
 class Avion(models.Model):
     type_avion = models.CharField(max_length=4)
-    date_mise_service = models.DateField(auto_now_add=True)
+    date_mise_service = models.DateField(auto_now_add=True, help_text="Format: YYYY-MM-DD")
     heures_vol_der_rev = models.PositiveIntegerField(default=0)
     heures_vol = models.PositiveIntegerField(default=0)
     date_der_rev = models.DateField(null=True)
@@ -36,7 +36,7 @@ class Rapport(models.Model):
     avion = models.ForeignKey(Avion, on_delete=models.CASCADE, related_name="rapports")
     texte = models.TextField()
     heures_vol = models.PositiveIntegerField(default=0)
-    date = models.DateField(auto_now_add=True, editable=False)
+    date = models.DateField(default=date.today(), help_text="Format: YYYY-MM-DD")
     def __str__(self):
         return f"Rapport pour {self.avion} - {self.date}"
 
@@ -45,7 +45,7 @@ class Employe(models.Model):
     is_navigant = models.BooleanField()
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
-    date_embauche = models.DateField(auto_now_add=True, editable=False)
+    date_embauche = models.DateField(auto_now_add=True, editable=False, help_text="Format: YYYY-MM-DD")
     fonction = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=15, validators=[RegexValidator(r"^[\d\s+\-]+$")])
     salaire = models.DecimalField(max_digits=10, decimal_places=2)
@@ -88,13 +88,13 @@ class Jour(models.Model):
     SAMEDI = "SA"
     DIMANCHE = "DI"
     JOUR_CHOICES = {
-        LUNDI: "lundi",
-        MARDI: "mardi",
-        MERCREDI: "mercredi",
-        JEUDI: "jeudi",
-        VENDREDI: "vendredi",
-        SAMEDI: "samedi",
-        DIMANCHE: "dimanche"
+        LUNDI: "Lundi",
+        MARDI: "Mardi",
+        MERCREDI: "Mercredi",
+        JEUDI: "Jeudi",
+        VENDREDI: "Vendredi",
+        SAMEDI: "Samedi",
+        DIMANCHE: "Dimanche"
     }
 
     jour = models.CharField(max_length=2, choices=JOUR_CHOICES)
@@ -105,8 +105,8 @@ class Vol(models.Model):
     avion = models.ForeignKey(Avion, on_delete=models.SET_NULL, related_name="vols", null=True)
     depart = models.ForeignKey(Ville, on_delete=models.CASCADE, related_name="depart_vols")
     arrive = models.ForeignKey(Ville, on_delete=models.CASCADE, related_name="arrive_vols")
-    heure_depart = models.TimeField()
-    duree = models.DurationField() #en millisecondes
+    heure_depart = models.TimeField(help_text="Format: HH:MM:SS")
+    duree = models.DurationField(help_text="Format: D HH:MM:SS") #en deltatime
     jours = models.ManyToManyField(Jour, related_name="vols")
     def __str__(self):
         return f"Vol de {self.depart} à {self.arrive} ({self.heure_depart})"
@@ -114,8 +114,8 @@ class Vol(models.Model):
 class Escale(models.Model):
     vol = models.ForeignKey(Vol, on_delete=models.CASCADE, related_name="escales")
     ville = models.ForeignKey(Ville, on_delete=models.CASCADE, related_name="escales")
-    heure_arrive = models.TimeField()
-    duree = models.DurationField() #en millisecondes
+    heure_arrive = models.TimeField(help_text="Format: HH:MM:SS")
+    duree = models.DurationField(help_text="Format: D HH:MM:SS") #en millisecondes
     no_ord = models.PositiveIntegerField(default=0)
     def __str__(self):
         return f"Escale (n° {self.no_ord}) à {self.ville} pour le vol {self.vol} (Arrivée: {self.heure_arrive})"
