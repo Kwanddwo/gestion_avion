@@ -1,0 +1,107 @@
+/* Form Dispaly Desine*/
+.invoice-form {
+    display: none;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+form label {
+    display: block;
+    margin-bottom: 10px;
+    color: #344767;
+    font-size: 16px;
+    font-weight: 600;
+}
+form input[type="text"],
+form input[type="tel"],
+form input[type="number"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #495057;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+form input[type="text"]:focus,
+form input[type="tel"]:focus,
+form input[type="number"]:focus {
+    border-color: #007bff;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
+    outline: none;
+}
+form input[type="text"]:hover,
+form input[type="tel"]:hover,
+form input[type="number"]:hover {
+    background: #fff;
+    border-color: #adb5bd;
+}
+
+
+form input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+
+
+/*Sipmle blue color*/
+.btn-container button {
+    font-size: 1rem; 
+    background: #007BFF;
+    color: rgb(255, 255, 255);
+    padding: 0.5rem 1rem; 
+    border: none;
+    border-radius: 6px;
+    margin: 0; 
+    width: auto; 
+    flex: none; 
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+
+/*views Design*/
+.view .button-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding-top: 15px;
+    margin-top: 2px;
+}
+
+
+.view .btn {
+    background-color: var(--primary);
+    color: var(--background);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.view .btn-delete {
+    background-color: #dc3545;
+}
+
+.view .btn-delete:hover {
+    background-color: #c82333;
+}

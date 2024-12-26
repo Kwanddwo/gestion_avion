@@ -2,81 +2,171 @@
 
 {% block head %}
     <script>
+        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // Employee information form toggle functionality
             const form = document.getElementById("update-form");
             const info = document.getElementById("employe-info");
-            const button = document.getElementById("update-button");
-            button.onclick = () => {
-                if (form.style.display == "none") {
-                    form.style.setProperty("display", "block");
-                    info.style.setProperty("display", "none");
-                    button.innerHTML = "Annuler";
+            const modifybutton = document.getElementById("update-button");
+            const anuulerButton = document.getElementById("anuuler-button");
+            
+            // Toggle between update form and info display
+            modifybutton.onclick = () => {
+                if (form.style.display === "none") {
+                    // Show update form, hide info
+                    form.style.display = "block";
+                    info.style.display = "none";
+
+
                 } else {
-                    form.style.setProperty("display", "none");
-                    info.style.setProperty("display", "block");
-                    button.innerHTML = "Modifier";
+                    // Show info, hide update form
+                    form.style.display = "none";
+                    info.style.display = "block";
                 }
             }
+
+            anuulerButton.onclick = () => {
+                event.preventDefault();
+
+                if (form.style.display === "block") {
+                    // Show update form, hide info
+                    form.style.display = "none";
+                    info.style.display = "block";
+
+
+                } else {
+                    // Show info, hide update form
+                    form.style.display = "block";
+                    info.style.display = "none";
+                }
+            }
+
+            
+            // Navigation personnel form toggle functionality
             const navigantForm = document.getElementById("update-navigant-form");
             const navigantInfo = document.getElementById("employe-navigant-info");
-            const navigantButton = document.getElementById("update-navigant-button");
-            navigantButton.onclick = () => {
-                if (navigantForm.style.display == "none") {
-                    navigantForm.style.setProperty("display", "block");
-                    navigantInfo.style.setProperty("display", "none");
-                    navigantButton.innerHTML = "Annuler";
+            const modifyNavigantButton = document.getElementById("update-navigant-button");
+            const annulerNavigantButton = document.getElementById("annuler-navigant-button");
+            
+            // Toggle between navigation update form and info display
+            modifyNavigantButton.onclick = () => {
+                if (navigantForm.style.display === "none") {
+                    // Show update form, hide info
+                    navigantForm.style.display = "block";
+                    navigantInfo.style.display = "none";
                 } else {
-                    navigantForm.style.setProperty("display", "none");
-                    navigantInfo.style.setProperty("display", "block");
-                    navigantButton.innerHTML = "Modifier";
+                    // Show info, hide update form
+                    navigantForm.style.display = "none";
+                    navigantInfo.style.display = "block";
                 }
             }
-        })
+
+            annulerNavigantButton.onclick = () => {
+                event.preventDefault();
+
+                if (navigantForm.style.display === "block") {
+                    // Show update form, hide info
+                    navigantForm.style.display = "none";
+                    navigantInfo.style.display = "block";
+
+
+                } else {
+                    // Show info, hide update form
+                    navigantForm.style.display = "block";
+                    navigantInfo.style.display = "none";
+                }
+            }
+        });
     </script>
 {% endblock %}
 
 {% block body %}
-    <h1>Employé ID: {{ employe.id }}</h1>
-    <div id="employe-info">
-        <p>Nom: {{ employe.nom }}</p>
-        <p>Prénom: {{ employe.prenom }}</p>
-        <p>Fonction: {{ employe.fonction }}</p>
-        <p>Téléphone: {{ employe.phone_number }}</p>
-        <p>Salaire: {{ employe.salaire }}</p>
-    </div>
-
-    <form style="display: none;" id="update-form" action="{% url 'employe_view' employe.id %}" method="post">
-        {% csrf_token %}
-        {{ updateForm }}
-        <input type="submit" value="Modifier">
-    </form>
-
-    <button id="update-button">Modifier</button>
-    <form method="post" action="{% url 'employe_view' employe.id %}">
-        {% csrf_token %}
-        <input type="hidden" name="_method" value="DELETE">
-        <input type="submit" value="Supprimer" />
-    </form>
-    {% if employe.is_navigant and employe_navigant %}
-        <h1>Info du navigation:</h1>
-        <div id="employe-navigant-info">
-            <p>Avions:</p>
-            <ul>
-                {% for avion in employe_navigant.avions.all %}
-                    <li>{{ avion }}</li>
-                {% endfor %}
-            </ul>
-            <p>Heures de vol: {{ employe_navigant.heures_vol }}</p>
-            <p>Heures de vol par moins: {{ employe_navigant.heures_mois_vol }}</p>
-
+<div class="view">
+    <div class="container">
+        {# Employee Basic Information Section #}
+        <div class="header-container">
+            <h1 class="title">Employé <span>#{{ employe.id }}</span></h1>
         </div>
 
-        <form style="display: none;" id="update-navigant-form" action="{% url 'employe_navigant_view' employe.pk %}" method="post">
-            {% csrf_token %}
-            {{ updateNavigantForm }}
-            <input type="submit" value="Modifier">
-        </form>
+        {# Display Employee Information Panel #}
+        <div class="info-container" id="employe-info" style="display: block;">
+            <div class="info-panel">
+                <p data-label="Nom">{{ employe.nom }}</p>
+                <p data-label="Prénom">{{ employe.prenom }}</p>
+                <p data-label="Fonction">{{ employe.fonction }}</p>
+                <p data-label="Téléphone">{{ employe.phone_number }}</p>
+                <p data-label="Salaire">{{ employe.salaire }}</p>
+            </div>
+            <div class="btn-groupe">
+                {# Action Buttons for Employee Information #}
+                <div class="lef-btn-container">
+                    <button id="update-button" class="bright-btn lef-btn">Modifier</button>
+                    {# Delete Employee Form #}
+                    <form method="post" action="{% url 'employe_view' employe.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn-supprimer lef-btn">Supprimer</button>
+                    </form>
+                </div>
+                <a href="{% url 'employe' %}" id="retournez" class="retournez-btn right-btn">Retournez</a>
+            </div>
+        </div>
 
-        <button id="update-navigant-button">Modifier</button>
-    {% endif %}
+
+        {# Employee Update Form - Hidden by default #}
+        <div class="form-style" id="update-form" style="display: none;">
+            <form  action="{% url 'employe_view' employe.id %}" method="post">
+                {% csrf_token %}
+                {{ updateForm }}
+                <div class="btn-groupe">
+                    <button id="submit-button" class="bright-btn" type="submit">Modifier</button>
+                    <button type="button" id="anuuler-button" class="retournez-btn">Anuuler</button>
+                </div>
+            </form>
+        </div>
+
+
+        {# Navigation Personnel Section - Only shown for navigation personnel #}
+        {% if employe.is_navigant and employe_navigant %}
+             <!-- Employee Navigant Information Section -->
+            <div class="header-container">
+                <h1 class="title">Info du navigation</h1>
+            </div>
+            
+            <!-- Display Navigation Information Panel -->
+            <div class="info-container" id="employe-navigant-info" style="display: block;">
+                <div class="info-panel">
+                    <p data-label="Avions">
+                        <ul class="avion-list">
+                            {% for avion in employe_navigant.avions.all %}
+                                <li>{{ avion }}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                    <p data-label="Heures de vol">{{ employe_navigant.heures_vol }}</p>
+                    <p data-label="Heures de vol par mois">{{ employe_navigant.heures_mois_vol }}</p>
+                </div>
+                <div class="btn-groupe">
+                    <!-- Action Buttons for Navigation Information -->
+                    <div class="lef-btn-container">
+                        <button id="update-navigant-button" class="bright-btn lef-btn">Modifier</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Update Form - Hidden by default -->
+            <div class="form-style" id="update-navigant-form" style="display: none;">
+                <form action="{% url 'employe_navigant_view' employe.pk %}" method="post">
+                    {% csrf_token %}
+                    {{ updateNavigantForm }}
+                    <div class="btn-groupe">
+                        <button type="submit" class="bright-btn">Modifier</button>
+                        <button type="button" id="annuler-navigant-button" class="retournez-btn">Annuler</button>
+                    </div>
+                </form>
+            </div>
+
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

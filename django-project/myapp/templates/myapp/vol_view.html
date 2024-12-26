@@ -2,86 +2,157 @@
 
 {% block head %}
     <script>
+        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // Vol information form toggle functionality
             const form = document.getElementById("update-form");
             const info = document.getElementById("vol-info");
-            const button = document.getElementById("update-button");
-            button.onclick = () => {
-                if (form.style.display == "none") {
-                    form.style.setProperty("display", "block");
-                    info.style.setProperty("display", "none");
-                    button.innerHTML = "Annuler";
+            const modifyButton = document.getElementById("update-button");
+            const annulerButton = document.getElementById("annuler-button");
+            
+            // Toggle between update form and info display
+            modifyButton.onclick = () => {
+                if (form.style.display === "none") {
+                    // Show update form, hide info
+                    form.style.display = "block";
+                    info.style.display = "none";
                 } else {
-                    form.style.setProperty("display", "none");
-                    info.style.setProperty("display", "block");
-                    button.innerHTML = "Modifier";
+                    // Show info, hide update form
+                    form.style.display = "none";
+                    info.style.display = "block";
                 }
             }
 
-            const createEscaleButton = document.getElementById("create-escale-button");
+            annulerButton.onclick = () => {
+                event.preventDefault();
+
+                if (form.style.display === "block") {
+                    // Show update form, hide info
+                    form.style.display = "none";
+                    info.style.display = "block";
+                } else {
+                    // Show info, hide update form
+                    form.style.display = "block";
+                    info.style.display = "none";
+                }
+            }
+
+            // Escale creation form toggle functionality
             const createEscaleForm = document.getElementById("create-escale-form");
+            const createEscaleButton = document.getElementById("create-escale-button");
+            
+            // Toggle between escale creation form and button
             createEscaleButton.onclick = () => {
-                if (createEscaleForm.style.display == "none") {
-                    createEscaleForm.style.setProperty("display", "block");
+                if (createEscaleForm.style.display === "none") {
+                    // Show escale creation form
+                    createEscaleForm.style.display = "block";
                     createEscaleButton.innerHTML = "Annuler";
                 } else {
-                    createEscaleForm.style.setProperty("display", "none");
+                    // Hide escale creation form
+                    createEscaleForm.style.display = "none";
                     createEscaleButton.innerHTML = "Nouvelle Escale";
                 }
             }
-        })
+        });
     </script>
 {% endblock %}
 
 {% block body %}
-    <h1>Vol ID: {{vol.pk}}</h1>
-    <div id="vol-info">
-        <p>Avion: {{vol.avion}}</p>
-        <p>Départ: {{vol.depart.nom}} à {{vol.heure_depart}}</p>
-        <p>Arrivée: {{vol.arrive.nom}}</p>
-        <p>Durée: {{vol.duree}}</p>
-        <p>Jours: </p>
-        <ul>
-            {% for jour in vol.jours.all %}
-                <li>{{ jour }}</li>
-            {% endfor %}
-        </ul>
+<div class="view">
+    <div class="container">
+        {# Vol Basic Information Section #}
+        <div class="header-container">
+            <h1 class="title">Vol <span>#{{ vol.pk }}</span></h1>
+        </div>
+
+        {# Display Vol Information Panel #}
+        <div class="info-container" id="vol-info" style="display: block;">
+            <div class="info-panel">
+                <p data-label="Avion">{{ vol.avion }}</p>
+                <p data-label="Départ">{{ vol.depart.nom }} à {{ vol.heure_depart }}</p>
+                <p data-label="Arrivée">{{ vol.arrive.nom }}</p>
+                <p data-label="Durée">{{ vol.duree }}</p>
+                <p data-label="Jours">
+                    <ul class="days-list">
+                        {% for jour in vol.jours.all %}
+                            <li>{{ jour }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            </div>
+            <div class="btn-groupe">
+                {# Action Buttons for Vol Information #}
+                <div class="lef-btn-container">
+                    <button id="update-button" class="bright-btn lef-btn">Modifier Vol</button>
+                    {# Delete Vol Form #}
+                    <form method="post" action="{% url 'vol_view' vol.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn-supprimer lef-btn">Supprimer Vol</button>
+                    </form>
+                </div>
+                <a href="{% url 'vol' %}" id="retournez" class="retournez-btn right-btn">Retournez</a>
+            </div>
+        </div>
+
+        {# Vol Update Form - Hidden by default #}
+        <div class="form-style" id="update-form" style="display: none;">
+            <form action="{% url 'vol_view' vol.pk %}" method="post">
+                {% csrf_token %}
+                {{ updateForm }}
+                <div class="btn-groupe">
+                    <button id="submit-button" class="bright-btn" type="submit">Modifier Vol</button>
+                    <button type="button" id="annuler-button" class="retournez-btn">Annuler</button>
+                </div>
+            </form>
+        </div>
+
+        {# Escales Section #}
+        <div class="header-container">
+            <h1 class="title">Escales</h1>
+        </div>
+
+        {# Escale Creation Button #}
+        <div class="btn-groupe">
+            <button id="create-escale-button" class="bright-btn">Nouvelle Escale</button>
+        </div>
+
+        {# Escale Creation Form - Hidden by default #}
+        <div class="form-style" id="create-escale-form" style="display: none;">
+            <form method="post" action="{% url 'create_escale' vol.pk %}">
+                {% csrf_token %}
+                {{ escaleForm }}
+                <div class="btn-groupe">
+                    <button type="submit" class="bright-btn">Créer</button>
+                </div>
+            </form>
+        </div>
+
+        {# Display Escales List #}
+        {% if not escales %}
+            <div class="info-panel">
+                <p class="empty-message">Ce vol n'a pas d'escales</p>
+            </div>
+        {% else %}
+            <div class="info-container" id="escales-info">
+                <ol class="escales-list">
+                    {% for esc in escales %}
+                        <li id="esc-{{ esc.pk }}" class="escale-item">
+                            <span class="escale-info">{{ esc }}</span>
+                            <div class="escale-actions">
+                                <a href="{% url 'escale' esc.pk %}" class="bright-btn">Modifier</a>
+                                {# Delete Escale Form #}
+                                <form method="post" action="{% url 'escale' esc.pk %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn-supprimer">Supprimer</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        {% endif %}
     </div>
-
-    <form style="display: none;" id="update-form" action="{% url 'vol_view' vol.pk %}" method="post">
-        {{ updateForm }}
-        <input type="submit" value="Modifier Vol">
-    </form>
-
-    <button id="update-button">Modifier Vol</button>
-    <form method="post" action="{% url 'vol_view' vol.pk %}">
-        <input type="hidden" name="_method" value="DELETE">
-        <input type="submit" value="Supprimer Vol" />
-    </form>
-
-    <h3>Escales :</h3>
-    <button id="create-escale-button">Nouvelle Escale</button>
-    <form id="create-escale-form" style="display: none" method="post" action="{% url 'create_escale' vol.id %}">
-        {{ escaleForm }}
-        <input type="submit" value="Créer"/>
-    </form>
-    {% if not escales %}
-        <p>Ce vol n'a pas d'éscales</p>
-    {% else %}
-    <div id="escales-info">
-        <ol>
-            {% for esc in escales %}
-            <li id="esc-{{esc.pk}}">
-                {{ esc }}
-                <a href="{% url 'escale' esc.pk %}">Modifier</a>
-                <form style="display: inline" method="post" action="{% url 'escale' esc.pk %}">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="submit" value="Supprimer" />
-                </form>
-            </li>
-            {% endfor %}
-        </ol>
-    </div>
-    {% endif %}
-
+</div>
 {% endblock %}

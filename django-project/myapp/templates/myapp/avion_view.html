@@ -2,19 +2,38 @@
 
 {% block head %}
     <script>
+        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // Avion information form toggle functionality
             const form = document.getElementById("update-form");
             const info = document.getElementById("avion-info");
-            const button = document.getElementById("update-button");
-            button.onclick = () => {
-                if (form.style.display == "none") {
-                    form.style.setProperty("display", "block");
-                    info.style.setProperty("display", "none");
-                    button.innerHTML = "Annuler";
+            const modifyButton = document.getElementById("update-button");
+            const annulerButton = document.getElementById("annuler-button");
+            
+            // Toggle between update form and info display
+            modifyButton.onclick = () => {
+                if (form.style.display === "none") {
+                    // Show update form, hide info
+                    form.style.display = "block";
+                    info.style.display = "none";
                 } else {
-                    form.style.setProperty("display", "none");
-                    info.style.setProperty("display", "block");
-                    button.innerHTML = "Modifier";
+                    // Show info, hide update form
+                    form.style.display = "none";
+                    info.style.display = "block";
+                }
+            }
+
+            annulerButton.onclick = () => {
+                event.preventDefault();
+
+                if (form.style.display === "block") {
+                    // Show update form, hide info
+                    form.style.display = "none";
+                    info.style.display = "block";
+                } else {
+                    // Show info, hide update form
+                    form.style.display = "block";
+                    info.style.display = "none";
                 }
             }
         });
@@ -22,23 +41,48 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Avion ID: {{avion.pk}}</h1>
-    <div id="avion-info">
-        <p>Type: {{avion.type_avion}}</p>
-        <p>Date mise en service: {{avion.date_mise_service}}</p>
-        <p>Heures de Vol: {{avion.heures_vol}}</p>
-        <p>Heures de Vol dès dérnière révision: {{avion.heures_vol_der_rev}}</p>
-        <p>Date de la dérnière révision: {{avion.date_der_rev}}</p>
+<div class="view">
+    <div class="container">
+        {# Avion Basic Information Section #}
+        <div class="header-container">
+            <h1 class="title">Avion <span>#{{ avion.pk }}</span></h1>
+        </div>
+
+        {# Display Avion Information Panel #}
+        <div class="info-container" id="avion-info" style="display: block;">
+            <div class="info-panel">
+                <p data-label="Type">{{ avion.type_avion }}</p>
+                <p data-label="Date mise en service">{{ avion.date_mise_service }}</p>
+                <p data-label="Heures de Vol">{{ avion.heures_vol }}</p>
+                <p data-label="Heures de Vol dès dérnière révision">{{ avion.heures_vol_der_rev }}</p>
+                <p data-label="Date de la dérnière révision">{{ avion.date_der_rev }}</p>
+            </div>
+            <div class="btn-groupe">
+                {# Action Buttons for Avion Information #}
+                <div class="lef-btn-container">
+                    <button id="update-button" class="bright-btn lef-btn">Modifier</button>
+                    {# Delete Avion Form #}
+                    <form method="post" action="{% url 'avion_view' avion.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn-supprimer lef-btn">Supprimer</button>
+                    </form>
+                </div>
+                <a href="{% url 'avion' %}" id="retournez" class="retournez-btn right-btn">Retournez</a>
+            </div>
+        </div>
+
+        {# Avion Update Form - Hidden by default #}
+        <div class="form-style" id="update-form" style="display: none;">
+            <form action="{% url 'avion_view' avion.pk %}" method="post">
+                {% csrf_token %}
+                {{ updateForm }}
+                <div class="btn-groupe">
+                    <button id="submit-button" class="bright-btn" type="submit">Modifier</button>
+                    <button type="button" id="annuler-button" class="retournez-btn">Annuler</button>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <form style="display: none;" id="update-form" action="{% url 'avion_view' avion.pk %}" method="post">
-        {{ updateForm }}
-        <input type="submit" value="Modifier avion">
-    </form>
-
-    <button id="update-button">Modifier avion</button>
-    <form method="post" action="{% url 'avion_view' avion.pk %}">
-        <input type="hidden" name="_method" value="DELETE">
-        <input type="submit" value="Supprimer" />
-    </form>
+</div>
 {% endblock %}
