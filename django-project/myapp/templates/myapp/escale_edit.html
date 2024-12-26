@@ -1,11 +1,23 @@
 {% extends "myapp/layout.html" %}
 
 {% block body %}
-    <h2>Modifier éscale n°{{escale.no_ord}} pour vol ID: {{vol.pk}}</h2>
-    <form method="post" action="{% url 'escale' escale.pk %}">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Modifier">
-    </form>
-    <a href="{% url 'vol_view' escale.vol.pk %}">Annuler</a>
+<div class="view">
+    <div class="container">
+        <div class="form-style">
+            <h2>Modifier éscale n°{{escale.no_ord}} pour vol ID: {{vol.pk}}</h2>
+            <form method="post" action="{% url 'escale' escale.pk %}">
+                {% csrf_token %}
+                {{ form }}
+                <div class="btn-groupe">
+                    <div class="lef-btn-container">
+                        <button type="submit" class="bright-btn">Modifier</button>
+                        <a href="{% url 'vol_view' escale.vol.pk %}"><button class="btn-supprimer">Annuler</button></a>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
 {% endblock %}

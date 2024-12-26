@@ -3,10 +3,9 @@
 {% block body %}
     <div class="login">
         <div class="container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="Logo" style="height: 40px; margin-bottom: 20px;">
             <h1>Log in</h1>
-            <p>Stay updated on your professional world</p>
-            <form method="post" action="{% url 'index' %}">
+            <p>Manager votre compagnie aérienne</p>
+            <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -18,10 +17,10 @@
                 </div>
                 <button type="submit" class="btn">Sign in</button>
             </form>
-            <p class="footer">New to LinkedIn? <a href="{% url 'register' %}">Join now</a></p>
+            <p class="footer">N'avez vous pas une compte? <a href="{% url 'register' %}">Créer le</a></p>
         </div>
         <div class="small-text">
-            <p>Welcome to our platform! Please sign in to access your account and stay updated on your professional network.</p>
+            <p>Bienvenue! Manager votre compagnie aérienne</p>
         </div>
     </div>
 {% endblock %}

@@ -87,15 +87,15 @@
             <div class="btn-groupe">
                 {# Action Buttons for Vol Information #}
                 <div class="lef-btn-container">
-                    <button id="update-button" class="bright-btn lef-btn">Modifier Vol</button>
+                    <button id="update-button" class="bright-btn lef-btn">Modifier</button>
                     {# Delete Vol Form #}
                     <form method="post" action="{% url 'vol_view' vol.pk %}">
                         {% csrf_token %}
                         <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn-supprimer lef-btn">Supprimer Vol</button>
+                        <button type="submit" class="btn-supprimer lef-btn">Supprimer</button>
                     </form>
                 </div>
-                <a href="{% url 'vol' %}" id="retournez" class="retournez-btn right-btn">Retournez</a>
+                <a href="{% url 'vol' %}" id="retournez"><button class="retournez-btn right-btn">Retournez</button></a>
             </div>
             {% endif %}
         </div>
@@ -107,7 +107,7 @@
                 {% csrf_token %}
                 {{ updateForm }}
                 <div class="btn-groupe">
-                    <button id="submit-button" class="bright-btn" type="submit">Modifier Vol</button>
+                    <button id="submit-button" class="bright-btn" type="submit">Modifier</button>
                     <button type="button" id="annuler-button" class="retournez-btn">Annuler</button>
                 </div>
             </form>
@@ -150,7 +150,7 @@
                             <span class="escale-info">{{ esc }}</span>
                             {% if request.user.is_authenticated %}
                             <div class="escale-actions">
-                                <a href="{% url 'escale' esc.pk %}" class="bright-btn">Modifier</a>
+                                <a href="{% url 'escale' esc.pk %}"><button class="bright-btn">Modifier</button></a>
                                 {# Delete Escale Form #}
                                 <form method="post" action="{% url 'escale' esc.pk %}" style="display: inline;">
                                     {% csrf_token %}

@@ -109,7 +109,7 @@ class Vol(models.Model):
     duree = models.DurationField(help_text="Format: D HH:MM:SS") #en deltatime
     jours = models.ManyToManyField(Jour, related_name="vols")
     def __str__(self):
-        return f"Vol de {self.depart} à {self.arrive} ({self.heure_depart})"
+        return f"N° {self.pk} de {self.depart} à {self.arrive}"
 
 class Escale(models.Model):
     vol = models.ForeignKey(Vol, on_delete=models.CASCADE, related_name="escales")

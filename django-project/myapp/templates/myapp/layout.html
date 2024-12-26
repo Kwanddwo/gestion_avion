@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}JetPass{% endblock %}</title>
+        <title>{% block title %}AirENSA{% endblock %}</title>
         <link rel="stylesheet" type="text/css" href="{% static 'myapp/styles.css' %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         {% block head %}
@@ -15,8 +15,7 @@
         <nav class="navbar">
             <div class="container nav-container">
                 <a href="{% url 'index' %}" class="logo">
-                    <div class="logo-icon"></div>
-                    JetPass
+                    AirENSA
                 </a>
                 <div class="nav-links">
                     <a href="{% url 'vol' %}" class="nav-link">Vols</a>

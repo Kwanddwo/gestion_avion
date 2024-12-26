@@ -562,8 +562,7 @@ form button[type="submit"]:hover {
 
 .btn-supprimer {
     background: linear-gradient(135deg, #ff4b4b 0%, #d10000 100%);
-    color: white;
-    text-transform: uppercase;
+    color: white; 
     letter-spacing: 0.5px;
     box-shadow: 0 4px 15px rgba(255, 75, 75, 0.2);
 }
@@ -589,6 +588,7 @@ form button[type="submit"]:hover {
 .retournez-btn {
     background-color: #6c757d;
     color: #fff;
+    padding: default;
     text-align: center;
     text-decoration: none;
     border-radius: 10px;

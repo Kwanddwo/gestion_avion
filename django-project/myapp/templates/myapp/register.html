@@ -3,9 +3,8 @@
 {% block body %}
     <div class="login">
         <div class="container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="Logo" style="height: 40px; margin-bottom: 20px;">
-            <h2>Singn in</h2>
-            <p>Stay updated on your professional world</p>
+            <h2>Sign in</h2>
+            <p>Manager votre compagnie aérienne</p>
 
             {% if message %}
                 <div>{{ message }}</div>
@@ -28,10 +27,10 @@
                 <button type="submit" class="btn">Register</button>
             </form>
 
-            <p class="footer">Already have an account? <a href="{% url 'login' %}">Log In here.</a></p>
+            <p class="footer">Avez vous déja une compte? <a href="{% url 'login' %}">Log In ici.</a></p>
         </div>
         <div class="small-text">
-            <p>Welcome to our platform! Please register to create your account and stay updated on your professional network.</p>
+            <p>Bienvenue! Manager votre compagnie aérienne</p>
         </div>
     </div>
 {% endblock %}
