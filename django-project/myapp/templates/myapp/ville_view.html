@@ -2,42 +2,84 @@
 
 {% block head %}
     <script>
+        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // Ville information form toggle functionality
             const form = document.getElementById("update-form");
             const info = document.getElementById("ville-info");
-            const button = document.getElementById("update-button");
-            button.onclick = () => {
-                if (form.style.display == "none") {
-                    form.style.setProperty("display", "block");
-                    info.style.setProperty("display", "none");
-                    button.innerHTML = "Annuler";
+            const modifyButton = document.getElementById("update-button");
+            const annulerButton = document.getElementById("annuler-button");
+
+            // Toggle between update form and info display
+            modifyButton.onclick = () => {
+                if (form.style.display === "none") {
+                    // Show update form, hide info
+                    form.style.display = "block";
+                    info.style.display = "none";
                 } else {
-                    form.style.setProperty("display", "none");
-                    info.style.setProperty("display", "block");
-                    button.innerHTML = "Modifier";
+                    // Show info, hide update form
+                    form.style.display = "none";
+                    info.style.display = "block";
                 }
             }
-        })
+
+            annulerButton.onclick = () => {
+                event.preventDefault();
+
+                if (form.style.display === "block") {
+                    // Show update form, hide info
+                    form.style.display = "none";
+                    info.style.display = "block";
+                } else {
+                    // Show info, hide update form
+                    form.style.display = "block";
+                    info.style.display = "none";
+                }
+            }
+        });
     </script>
 {% endblock %}
 
 {% block body %}
-    <h1>Ville ID: {{ ville.id }}</h1>
-    <div id="ville-info">
-        <p>Nom: {{ ville.nom }}</p>
-        <p>Pays: {{ ville.nom_pays }}</p>
+<div class="view">
+    <div class="container">
+        {# Ville Basic Information Section #}
+        <div class="header-container">
+            <h1 class="title">Ville <span>#{{ ville.id }}</span></h1>
+        </div>
+
+        {# Display Ville Information Panel #}
+        <div class="info-container" id="ville-info" style="display: block;">
+            <div class="info-panel">
+                <p data-label="Nom">{{ ville.nom }}</p>
+                <p data-label="Pays">{{ ville.nom_pays }}</p>
+            </div>
+            <div class="btn-groupe">
+                {# Action Buttons for Ville Information #}
+                <div class="lef-btn-container">
+                    <button id="update-button" class="bright-btn lef-btn">Modifier</button>
+                    {# Delete Ville Form #}
+                    <form method="post" action="{% url 'ville_view' ville.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn-supprimer lef-btn">Supprimer</button>
+                    </form>
+                </div>
+                <a href="{% url 'ville' %}" id="retournez" class="retournez-btn right-btn">Retournez</a>
+            </div>
+        </div>
+
+        {# Ville Update Form - Hidden by default #}
+        <div class="form-style" id="update-form" style="display: none;">
+            <form action="{% url 'ville_view' ville.id %}" method="post">
+                {% csrf_token %}
+                {{ updateForm }}
+                <div class="btn-groupe">
+                    <button id="submit-button" class="bright-btn" type="submit">Modifier</button>
+                    <button type="button" id="annuler-button" class="retournez-btn">Annuler</button>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <form style="display: none;" id="update-form" action="{% url 'ville_view' ville.id %}" method="post">
-        {% csrf_token %}
-        {{ updateForm }}
-        <input type="submit" value="Modifier">
-    </form>
-
-    <button id="update-button">Modifier</button>
-    <form method="post" action="{% url 'ville_view' ville.id %}">
-        {% csrf_token %}
-        <input type="hidden" name="_method" value="DELETE">
-        <input type="submit" value="Supprimer" />
-    </form>
+</div>
 {% endblock %}

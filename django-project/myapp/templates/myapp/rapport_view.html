@@ -2,44 +2,86 @@
 
 {% block head %}
     <script>
+        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // Rapport information form toggle functionality
             const form = document.getElementById("update-form");
             const info = document.getElementById("rapport-info");
-            const button = document.getElementById("update-button");
-            button.onclick = () => {
-                if (form.style.display == "none") {
-                    form.style.setProperty("display", "block");
-                    info.style.setProperty("display", "none");
-                    button.innerHTML = "Annuler";
+            const modifyButton = document.getElementById("update-button");
+            const annulerButton = document.getElementById("annuler-button");
+            
+            // Toggle between update form and info display
+            modifyButton.onclick = () => {
+                if (form.style.display === "none") {
+                    // Show update form, hide info
+                    form.style.display = "block";
+                    info.style.display = "none";
                 } else {
-                    form.style.setProperty("display", "none");
-                    info.style.setProperty("display", "block");
-                    button.innerHTML = "Modifier";
+                    // Show info, hide update form
+                    form.style.display = "none";
+                    info.style.display = "block";
                 }
             }
-        })
+
+            annulerButton.onclick = () => {
+                event.preventDefault();
+
+                if (form.style.display === "block") {
+                    // Show update form, hide info
+                    form.style.display = "none";
+                    info.style.display = "block";
+                } else {
+                    // Show info, hide update form
+                    form.style.display = "block";
+                    info.style.display = "none";
+                }
+            }
+        });
     </script>
 {% endblock %}
 
 {% block body %}
-    <h1>Rapport ID: {{ rapport.id }}</h1>
-    <div id="rapport-info">
-        <p>Avion: {{ rapport.avion }}</p>
-        <p>Date: {{ rapport.date }}</p>
-        <p>Heures de vol: {{ rapport.heures_vol }}</p>
-        <p>Texte: {{ rapport.texte }}</p>
+<div class="view">
+    <div class="container">
+        {# Rapport Basic Information Section #}
+        <div class="header-container">
+            <h1 class="title">Rapport <span>#{{ rapport.id }}</span></h1>
+        </div>
+
+        {# Display Rapport Information Panel #}
+        <div class="info-container" id="rapport-info" style="display: block;">
+            <div class="info-panel">
+                <p data-label="Avion">{{ rapport.avion }}</p>
+                <p data-label="Date">{{ rapport.date }}</p>
+                <p data-label="Heures de vol">{{ rapport.heures_vol }}</p>
+                <p data-label="Texte">{{ rapport.texte }}</p>
+            </div>
+            <div class="btn-groupe">
+                {# Action Buttons for Rapport Information #}
+                <div class="lef-btn-container">
+                    <button id="update-button" class="bright-btn lef-btn">Modifier</button>
+                    {# Delete Rapport Form #}
+                    <form method="post" action="{% url 'rapport_view' rapport.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn-supprimer lef-btn">Supprimer</button>
+                    </form>
+                </div>
+                <a href="{% url 'rapport' %}" id="retournez" class="retournez-btn right-btn">Retournez</a>
+            </div>
+        </div>
+
+        {# Rapport Update Form - Hidden by default #}
+        <div class="form-style" id="update-form" style="display: none;">
+            <form action="{% url 'rapport_view' rapport.id %}" method="post">
+                {% csrf_token %}
+                {{ updateForm }}
+                <div class="btn-groupe">
+                    <button id="submit-button" class="bright-btn" type="submit">Modifier</button>
+                    <button type="button" id="annuler-button" class="retournez-btn">Annuler</button>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <form style="display: none;" id="update-form" action="{% url 'rapport_view' rapport.id %}" method="post">
-        {% csrf_token %}
-        {{ updateForm }}
-        <input type="submit" value="Modifier">
-    </form>
-
-    <button id="update-button">Modifier</button>
-    <form method="post" action="{% url 'rapport_view' rapport.id %}">
-        {% csrf_token %}
-        <input type="hidden" name="_method" value="DELETE">
-        <input type="submit" value="Supprimer" />
-    </form>
+</div>
 {% endblock %}

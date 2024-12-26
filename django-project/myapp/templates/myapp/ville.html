@@ -8,10 +8,10 @@
             createFormButton.onclick = () => {
                 if (createForm.style.display === "none") {
                     createForm.style.display = "grid";
-                    createFormButton.textContent = "Annuler";
+                    createFormButton.innerHTML = "ANNULER";
                 } else {
                     createForm.style.display = "none";
-                    createFormButton.textContent = "Ajouter une ville";
+                    createFormButton.innerHTML = '<i class="fas fa-plus"></i> AJOUTER';
                 }
             }
 
@@ -20,10 +20,10 @@
             filterButton.onclick = () => {
                 if (filterForm.style.display === "none") {
                     filterForm.style.display = "grid";
-                    filterButton.textContent = "Masquer le filtre";
+                    filterButton.innerHTML = "MASQUER";
                 } else {
                     filterForm.style.display = "none";
-                    filterButton.textContent = "Filtrer les villes";
+                    filterButton.innerHTML = "<i class='fas fa-filter'></i> FILTRER";
                 }
             }
         });
@@ -31,60 +31,66 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container form-container form">
-
-        <!-- Ajouter Ville Form -->
-        <div class="card fade-in">
-            <button id="create-ville-button">Ajouter une ville</button>
-            <form id="create-ville-form" style="display: none;" method="post" action="{% url 'ville' %}">
-                {% csrf_token %}
-                {{ createForm.as_p }}
-                <button type="submit">Ajouter</button>
-            </form>
-        </div>
-
-        <!-- Filtrer Ville Form -->
-        <div class="card fade-in">
-            <button id="filter-button">Filtrer les villes</button>
-            <form id="filter-form" style="display: none;" method="get">
-                {{ filter.form.as_p }}
-                <button type="submit">Appliquer le filtre</button>
-            </form>
-        </div>
-
-        <div class="card fade-in">
-            <form action="{% url 'ville' %}" method="get">
-                <button type="submit">Annuler le filtre</button>
-            </form>
-        </div>
-
-        <div class="card fade-in table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>Nom du Pays</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for ville in filter.qs %}
-                        <tr class="fade-in" id="ville-info-{{ ville.id }}" onclick="window.location.href='/ville/{{ ville.id }}';" style="cursor: pointer;">
-                            <td>{{ ville.id }}</td>
-                            <td>{{ ville.nom }}</td>
-                            <td>{{ ville.nom_pays }}</td>
-                            <td>
-                                <form method="post" action="{% url 'ville_view' ville.pk %}" style="display: inline;">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="submit" value="Supprimer" class="delete-btn">
-                                </form>
-                            </td>
+    <div class="page-container">
+        <div class="content-container">
+            <!-- Buttons Container -->
+            <div class="btn-container">
+                <button class="btn btn-add bright-btn" id="create-ville-button">
+                    <i class="fas fa-plus"></i> AJOUTER
+                </button>
+                <button class="btn btn-filter" id="filter-button">
+                    <i class="fas fa-filter"></i> FILTRER
+                </button>
+            </div>
+            
+            <!-- Ajouter Ville Form-->
+            <div class="form-style" id="create-ville-form" style="display: none;">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ createForm.as_p }}
+                    <button class="bright-btn" type="submit">AJOUTER</button>
+                </form>
+            </div>
+            
+            <!-- Filter Ville Form-->
+            <div class="form-style" id="filter-form" style="display: none;">
+                <form method="get">
+                    {% csrf_token %}
+                    {{ filter.form.as_p }}
+                    <button class="bright-btn" type="submit">APPLIQUER</button>
+                </form>
+            </div>
+    
+            <div class="table-container">
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Nom du Pays</th>
+                            <th>Actions</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for ville in filter.qs %}
+                            <tr class="fade-in" id="ville-info-{{ ville.id }}" onclick="window.location.href='/ville/{{ ville.id }}';" style="cursor: pointer;"> 
+                                <td>{{ ville.id }}</td>
+                                <td>{{ ville.nom }}</td>
+                                <td>{{ ville.nom_pays }}</td>
+                                <td>
+                                    <div class="actions">
+                                        <form method="post" action="{% url 'ville_view' ville.pk %}" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" value="Supprimer" class="action-icon">🗑️</button> 
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
