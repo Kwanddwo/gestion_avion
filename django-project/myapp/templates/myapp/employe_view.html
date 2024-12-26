@@ -112,7 +112,6 @@
             </div>
         </div>
 
-
         {# Employee Update Form - Hidden by default #}
         <div class="form-style" id="update-form" style="display: none;">
             <form  action="{% url 'employe_view' employe.id %}" method="post">
@@ -137,11 +136,15 @@
             <div class="info-container" id="employe-navigant-info" style="display: block;">
                 <div class="info-panel">
                     <p data-label="Avions">
+                      {% if employe_navigant.avions %}
                         <ul class="avion-list">
-                            {% for avion in employe_navigant.avions.all %}
-                                <li>{{ avion }}</li>
-                            {% endfor %}
+                                {% for avion in employe_navigant.avions.all %}
+                                    <li>{{ avion }}</li>
+                                {% endfor %}
                         </ul>
+                      {% else %}
+                        <p>Cet employé n'est actuellement inscrit sur aucun équipage</p>
+                      {% endif %}
                     </p>
                     <p data-label="Heures de vol">{{ employe_navigant.heures_vol }}</p>
                     <p data-label="Heures de vol par mois">{{ employe_navigant.heures_mois_vol }}</p>

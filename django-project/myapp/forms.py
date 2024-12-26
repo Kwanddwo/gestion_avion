@@ -15,7 +15,7 @@ class EscaleForm(forms.ModelForm):
 class AvionForm(forms.ModelForm):
     class Meta:
         model = Avion
-        fields = ["type_avion", "heures_vol"]
+        fields = ["type_avion", "heures_vol", "est_interdit"]
 
 class EmployeForm(forms.ModelForm):
     class Meta:
@@ -25,7 +25,7 @@ class EmployeForm(forms.ModelForm):
 class RapportForm(forms.ModelForm):
     class Meta:
         model = Rapport
-        fields = ['avion', 'texte']
+        fields = ['avion', 'date', 'texte']
 
 class EmployeNavigantForm(forms.ModelForm):
     class Meta:

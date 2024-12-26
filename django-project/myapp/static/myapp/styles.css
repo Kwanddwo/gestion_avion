@@ -1,5 +1,7 @@
+/* Importing the Plus Jakarta Sans font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
+/* Resetting margins, padding, and box-sizing for all elements */
 * {
     margin: 0;
     padding: 0;
@@ -30,32 +32,34 @@ body {
 /* Container that holds content with a max-width of 1200px */
 .container {
     max-width: 1290px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    margin: 0 auto; /* Centers the container */
+    padding: 0 2rem; /* Adds padding on both sides */
 }
 
 /* Navbar styling */
 .navbar {
-    position: fixed;
+    position: fixed; /* Keeps the navbar at the top of the screen */
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Blurring the background behind navbar */
+    z-index: 1000; /* Ensures navbar stays on top of other content */
+    transition: all 0.3s ease; /* Smooth transition for background change */
 }
 
+/* Navbar background changes when scrolled */
 .navbar.scrolled {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95); /* More opaque when scrolled */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
 }
 
+/* Flex container for navbar content */
 .nav-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space between logo and nav links */
     align-items: center;
-    height: 80px;
+    height: 60px;
 }
 
 /* Logo styling */
@@ -69,6 +73,7 @@ body {
     gap: 0.5rem;
 }
 
+/* Logo icon design */
 .logo-icon {
     width: 32px;
     height: 32px;
@@ -83,15 +88,17 @@ body {
     align-items: center;
 }
 
+/* Individual navigation link styling */
 .nav-link {
     color: var(--text);
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
-    position: relative;
     transition: color 0.3s ease;
+    position: relative;
 }
 
+/* Underline effect on hover for navigation links */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -103,6 +110,7 @@ body {
     transition: width 0.3s ease;
 }
 
+/* Expands the underline on hover */
 .nav-link:hover::after {
     width: 100%;
 }
@@ -119,6 +127,7 @@ body {
     transition: all 0.3s ease;
 }
 
+/* CTA button hover effect */
 .cta-button:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
@@ -131,6 +140,7 @@ body {
     overflow: hidden;
 }
 
+/* Grid layout for hero section */
 .hero-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -138,10 +148,12 @@ body {
     align-items: center;
 }
 
+/* Hero content styling */
 .hero-content {
     max-width: 600px;
 }
 
+/* Badge for hero section */
 .hero-badge {
     display: inline-flex;
     align-items: center;
@@ -155,6 +167,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* Badge circle indicator */
 .hero-badge span {
     display: inline-block;
     width: 20px;
@@ -164,6 +177,7 @@ body {
     margin-right: 0.5rem;
 }
 
+/* Hero heading and text styling */
 .hero h1 {
     font-size: 3.5rem;
     line-height: 1.2;
@@ -178,11 +192,13 @@ body {
     max-width: 500px;
 }
 
+/* Hero buttons layout */
 .hero-buttons {
     display: flex;
     gap: 1rem;
 }
 
+/* Secondary button styling */
 .secondary-button {
     background: white;
     color: var(--text);
@@ -195,11 +211,13 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* Secondary button hover effect */
 .secondary-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Hero image container styling */
 .hero-image {
     position: relative;
     width: 100%;
@@ -210,12 +228,14 @@ body {
     overflow: hidden;
 }
 
+/* Hero image settings */
 .hero-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
+/* Floating cards within the hero image */
 .floating-card {
     position: absolute;
     background: white;
@@ -228,17 +248,20 @@ body {
     animation: float 3s ease-in-out infinite;
 }
 
+/* Position of the first floating card */
 .card-1 {
     top: 10%;
     left: -40px;
 }
 
+/* Position of the second floating card */
 .card-2 {
     bottom: 10%;
     right: -40px;
-    animation-delay: 1.5s;
+    animation-delay: 1.5s; /* Staggered animation */
 }
 
+/* Icon style inside floating cards */
 .floating-card .icon {
     width: 40px;
     height: 40px;
@@ -246,42 +269,46 @@ body {
     border-radius: 8px;
 }
 
+/* Text inside floating cards */
 .floating-card .text {
     font-size: 0.9rem;
     font-weight: 500;
 }
 
+/* Animation for floating cards */
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%, 100% { transform: translateY(0); } /* Start and end position */
+    50% { transform: translateY(-10px); } /* Move up in the middle of the animation */
 }
 
 /* Media query for responsive design on smaller screens */
 @media (max-width: 968px) {
     .hero-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Single column layout on small screens */
         text-align: center;
         gap: 2rem;
     }
 
-    .hero-content,
+    .hero-content {
+        margin: 0 auto; /* Center content */
+    }
+
     .hero p {
-        margin: 0 auto;
+        margin: 0 auto 2rem; /* Center paragraph */
     }
 
     .hero-buttons {
-        justify-content: center;
+        justify-content: center; /* Center buttons */
     }
 
     .nav-links {
-        display: none;
+        display: none; /* Hide navigation links on small screens */
     }
 
     .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.5rem; /* Reduce heading size on small screens */
     }
 }
-
 
 /* Main View Container
 -------------------------------------------------- */
@@ -886,3 +913,6 @@ form button[type="submit"]:hover {
     color: var(--text-light);
 }
 
+.interdit {
+    outline: 2px solid rgb(223, 57, 57);
+}

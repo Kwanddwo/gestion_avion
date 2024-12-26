@@ -10,12 +10,16 @@
                     <span></span>
                     Airport Management
                 </div>
+                {% if request.user.is_authenticated %}
+                <h1>Welcome Back, {{request.user.username}}</h1>
+                {% else %}
                 <h1>Streamline Airport Operations with Innovation</h1>
-                <p>Adapted to emphasize tools for airport efficiency and passenger experience</p>
+                <p>Adapted to emphasize tools for airport management and passenger experience</p>
                 <div class="hero-buttons">
-                    <a href="{% url 'login' %}" class="cta-button">Manage Flights</a>
-                    <a href="{% url 'register' %}" class="secondary-button">Explore Features</a>
+                    <a href="{% url 'login' %}" class="cta-button">Login</a>
+                    <a href="{% url 'register' %}" class="secondary-button">Register</a>
                 </div>
+                {% endif %}
             </div>
             <div class="hero-image">
                 <img src="https://images.pexels.com/photos/2245279/pexels-photo-2245279.jpeg?auto=compress&cs=tinysrgb&w=600">

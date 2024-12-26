@@ -1,6 +1,8 @@
 {% extends "myapp/layout.html" %}
 
+
 {% block head %}
+{% if request.user.is_authenticated %}
     <script>
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', () => {
@@ -55,6 +57,7 @@
             }
         });
     </script>
+{% endif %}
 {% endblock %}
 
 {% block body %}
@@ -139,6 +142,7 @@
                     {% for esc in escales %}
                         <li id="esc-{{ esc.pk }}" class="escale-item">
                             <span class="escale-info">{{ esc }}</span>
+             
                             <div class="escale-actions">
                                 <a href="{% url 'escale' esc.pk %}" class="bright-btn">Modifier</a>
                                 {# Delete Escale Form #}
@@ -153,6 +157,7 @@
                 </ol>
             </div>
         {% endif %}
+        <a href="{% url 'simulate_vol' vol.pk %}">Simuler Vol</a>
     </div>
 </div>
 {% endblock %}
