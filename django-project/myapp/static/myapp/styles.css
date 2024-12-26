@@ -648,7 +648,6 @@ form button[type="submit"]:hover {
 .table-container .invoice-table td {
     padding: 16px 20px; /* Padding for body cells */
     border-bottom: 1px solid #eee; /* Light gray border at the bottom */
-    color: #333; /* Dark gray text color */
     font-size: 14px; /* Font size for body text */
     white-space: nowrap; /* Prevent text from wrapping */
     overflow: hidden; /* Hide overflow text */
@@ -657,7 +656,7 @@ form button[type="submit"]:hover {
 
 /* Hover effect for table rows */
 .table-container .invoice-table tbody tr:hover {
-    background: #f8f9fa; /* Light gray background on hover */
+    background: #f0f0f9; /* Light gray background on hover */
 }
 
 /* Status badges */
@@ -913,6 +912,16 @@ form button[type="submit"]:hover {
     color: var(--text-light);
 }
 
+.table-container .invoice-table tbody tr.interdit,
 .interdit {
-    outline: 2px solid rgb(223, 57, 57);
+    color: white;
+    background-color: #ab0f0f;
+}
+
+.table-container .invoice-table tbody tr.interdit:hover,
+.interdit {
+    background: #a00a0a; /* Light gray background on hover */
+}
+ul {
+    padding: 0 2rem;
 }

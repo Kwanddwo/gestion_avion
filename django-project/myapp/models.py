@@ -30,7 +30,7 @@ class Avion(models.Model):
         self.heures_vol_der_rev += heures_vol
         self.interdit()
     def __str__(self):
-        return f"Avion {self.type_avion} (ID: {self.pk} Mise en service: {self.date_mise_service})"
+        return f"N° {self.pk} - type {self.type_avion}"
 
 class Rapport(models.Model):
     avion = models.ForeignKey(Avion, on_delete=models.CASCADE, related_name="rapports")
@@ -38,7 +38,7 @@ class Rapport(models.Model):
     heures_vol = models.PositiveIntegerField(default=0)
     date = models.DateField(default=date.today(), help_text="Format: YYYY-MM-DD")
     def __str__(self):
-        return f"Rapport pour {self.avion} - {self.date}"
+        return f"Rapport pour avion {self.avion} - {self.date}"
 
 # phone_number validator
 class Employe(models.Model):

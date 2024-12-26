@@ -1,6 +1,7 @@
 {% extends "myapp/layout.html" %}
 
 {% block head %}
+    {% if request.user.is_authenticated %}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const createForm = document.getElementById('create-vol-form');
@@ -27,7 +28,24 @@
                 }
             }
         });
-    </script>    
+    </script>
+    {% else %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterForm = document.getElementById('filter-form');
+            const filterButton = document.getElementById('filter-button');
+            filterButton.onclick = () => {
+                if (filterForm.style.display === "none") {
+                    filterForm.style.display = "grid";
+                    filterButton.innerHTML = "MASQUER";
+                } else {
+                    filterForm.style.display = "none";
+                    filterButton.innerHTML = "<i class='fas fa-filter'></i> FILTRER";
+                }
+            }
+        });
+    </script>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
@@ -35,15 +53,18 @@
         <div class="content-container">
             <!-- Buttons Container -->
             <div class="btn-container">
+                {% if request.user.is_authenticated %}
                 <button class="btn btn-add bright-btn" id="create-vol-button">
                     <i class="fas fa-plus"></i> AJOUTER
                 </button>
+                {% endif %}
                 <button class="btn btn-filter" id="filter-button">
                     <i class="fas fa-filter"></i> FILTRER
                 </button>
             </div>
             
             <!-- Ajouter Vol Form -->
+            {% if request.user.is_authenticated %}
             <div class="form-style" id="create-vol-form" style="display: none;">
                 <form method="post" action="{% url 'vol' %}">
                     {% csrf_token %}
@@ -51,6 +72,7 @@
                     <button class="bright-btn" type="submit">AJOUTER</button>
                 </form>
             </div>
+            {% endif %}
             
             <!-- Filtrer Vol Form -->
             <div class="form-style" id="filter-form" style="display: none;">
@@ -70,12 +92,15 @@
                             <th>Arrivé</th>
                             <th>Durée</th>
                             <th>Jours</th>
+                            {% if request.user.is_authenticated %}
                             <th>Actions</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
                         {% for vol in filter.qs %}
-                            <tr class="fade-in" id="vol-info-{{ vol.id }}" onclick="window.location.href='/vol/{{ vol.id }}';" style="cursor: pointer;">
+                            {% if not vol.avion.est_interdit %}
+                            <tr class="fade-in {%if vol.avion.est_interdit%}interdit{%endif%}" id="vol-info-{{ vol.id }}" onclick="window.location.href='/vol/{{ vol.id }}';" style="cursor: pointer;">
                                 <td>{{ vol.id }}</td>
                                 <td>{{ vol.depart.nom }} à {{ vol.heure_depart }}</td>
                                 <td>{{ vol.arrive.nom }}</td>
@@ -83,6 +108,7 @@
                                 <td>{% for jour in vol.jours.all %}
                                     {{ jour }}
                                 {% endfor %}</td>
+                                {% if request.user.is_authenticated %}
                                 <td>
                                     <div class="actions">
                                         <form method="post" action="{% url 'vol_view' vol.pk %}" style="display: inline;">
@@ -92,7 +118,9 @@
                                         </form>
                                     </div>
                                 </td>
+                                {% endif %}
                             </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

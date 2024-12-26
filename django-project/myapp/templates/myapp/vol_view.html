@@ -65,7 +65,7 @@
     <div class="container">
         {# Vol Basic Information Section #}
         <div class="header-container">
-            <h1 class="title">Vol <span>#{{ vol.pk }}</span></h1>
+            <h1 class="title">Vol <span>#{{ vol.pk }}</span>{%if vol.avion.est_interdit%}<span class="interdit">- Interdit -</span>{%endif%}</h1>
         </div>
 
         {# Display Vol Information Panel #}
@@ -83,6 +83,7 @@
                     </ul>
                 </p>
             </div>
+            {% if request.user.is_authenticated %}
             <div class="btn-groupe">
                 {# Action Buttons for Vol Information #}
                 <div class="lef-btn-container">
@@ -96,8 +97,10 @@
                 </div>
                 <a href="{% url 'vol' %}" id="retournez" class="retournez-btn right-btn">Retournez</a>
             </div>
+            {% endif %}
         </div>
 
+        {% if request.user.is_authenticated %}
         {# Vol Update Form - Hidden by default #}
         <div class="form-style" id="update-form" style="display: none;">
             <form action="{% url 'vol_view' vol.pk %}" method="post">
@@ -109,12 +112,14 @@
                 </div>
             </form>
         </div>
+        {% endif %}
 
         {# Escales Section #}
         <div class="header-container">
             <h1 class="title">Escales</h1>
         </div>
 
+        {% if request.user.is_authenticated %}
         {# Escale Creation Button #}
         <div class="btn-groupe">
             <button id="create-escale-button" class="bright-btn">Nouvelle Escale</button>
@@ -130,6 +135,7 @@
                 </div>
             </form>
         </div>
+        {% endif %}
 
         {# Display Escales List #}
         {% if not escales %}
@@ -142,7 +148,7 @@
                     {% for esc in escales %}
                         <li id="esc-{{ esc.pk }}" class="escale-item">
                             <span class="escale-info">{{ esc }}</span>
-             
+                            {% if request.user.is_authenticated %}
                             <div class="escale-actions">
                                 <a href="{% url 'escale' esc.pk %}" class="bright-btn">Modifier</a>
                                 {# Delete Escale Form #}
@@ -152,12 +158,15 @@
                                     <button type="submit" class="btn-supprimer">Supprimer</button>
                                 </form>
                             </div>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ol>
             </div>
         {% endif %}
+        {% if request.user.is_authenticated %}
         <a href="{% url 'simulate_vol' vol.pk %}">Simuler Vol</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

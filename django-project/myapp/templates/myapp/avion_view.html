@@ -1,6 +1,7 @@
 {% extends "myapp/layout.html" %}
 
 {% block head %}
+{% if request.user.is_authenticated %}
     <script>
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', () => {
@@ -38,6 +39,7 @@
             }
         });
     </script>
+{% endif %}
 {% endblock %}
 
 {% block body %}
@@ -45,7 +47,7 @@
     <div class="container">
         {# Avion Basic Information Section #}
         <div class="header-container">
-            <h1 class="title">Avion <span>#{{ avion.pk }}</span> <span style="color: crimson">INTERDIT</span>{%endif%}</h1>
+            <h1 class="title">Avion <span>#{{ avion.pk }}</span>{%if avion.est_interdit%}<span class="interdit">- INTERDIT -</span>{%endif%}</h1>
         </div>
 
         {# Display Avion Information Panel #}

@@ -87,9 +87,12 @@ def vol(request):
     })
 
 def vol_view(request, pk):
-    vol = get_object_or_404(Vol, pk=pk)    
+    vol = get_object_or_404(Vol, pk=pk)
 
-    if request.method == "POST":
+    if not request.user.is_authenticated and vol.avion.est_interdit:
+        return redirect("vol")
+
+    if request.method == "POST" and request.user.is_authenticated:
         if request.POST.get("_method") == "DELETE":
             vol.delete()
             return redirect("vol")
