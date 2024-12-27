@@ -8,13 +8,13 @@
             <div class="hero-content">
                 <div class="hero-badge">
                     <span></span>
-                    Airport Management
+                    Gestion des compagnies aériennes
                 </div>
                 {% if request.user.is_authenticated %}
                 <h1>Welcome Back, {{request.user.username}}</h1>
                 {% else %}
-                <h1>Streamline Airport Operations with Innovation</h1>
-                <p>Adapted to emphasize tools for airport management and passenger experience</p>
+                <h1>Gérez votre système aérien avec AirEnsakh</h1>
+                <p>connectez-vous pour stocker les données de votre compagnie aérienne et mieux les gérer</p>
                 <div class="hero-buttons">
                     <a href="{% url 'login' %}" class="cta-button">Login</a>
                     <a href="{% url 'register' %}" class="secondary-button">Register</a>
@@ -25,11 +25,11 @@
                 <img src="https://images.pexels.com/photos/2245279/pexels-photo-2245279.jpeg?auto=compress&cs=tinysrgb&w=600">
                 <div class="floating-card card-1">
                     <div class="icon"></div>
-                    <div class="text">Efficient Scheduling</div>
+                    <div class="text">meilleur stockage des données</div>
                 </div>
                 <div class="floating-card card-2">
                     <div class="icon"></div>
-                    <div class="text">Passenger Insights</div>
+                    <div class="text">excellent gestion des données</div>
                 </div>
             </div>
         </div>

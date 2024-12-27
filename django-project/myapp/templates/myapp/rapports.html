@@ -68,7 +68,7 @@
                             <th>Avion</th>
                             <th>Date</th>
                             <th>Heures de vol</th>
-                            <th>Actions</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,7 +83,7 @@
                                         <form method="post" action="{% url 'rapport_view' rapport.pk %}" style="display: inline;">
                                             {% csrf_token %}
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" value="Supprimer" class="action-icon">🗑️</button>
+                                            <button type="submit" value="Supprimer" class="action-icon"><i class="fa-solid fa-trash"></i></button>
                                         </form>
                                     </div>
                                 </td>

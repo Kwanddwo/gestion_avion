@@ -57,8 +57,8 @@ class Employe(models.Model):
     phone_number = models.CharField(max_length=15, validators=[RegexValidator(r"^[\d\s+\-]+$")])
     adresse = models.TextField()
     salaire = models.DecimalField(max_digits=10, decimal_places=2)
-    def __str__(self):
-        return f"{self.prenom} {self.nom} - {self.fonction} {"navigant" if self.is_navigant else "non-navigant"}"
+    #def __str__(self):
+        #return f"{self.prenom} {self.nom} - {self.fonction} {"navigant" if self.is_navigant else "non-navigant"}"
     
 
 class EmployeNavigant(models.Model):
@@ -126,4 +126,4 @@ class Escale(models.Model):
     duree = models.DurationField(help_text="Format: D HH:MM:SS") #en millisecondes
     no_ord = models.PositiveIntegerField(default=0)
     def __str__(self):
-        return f"Escale (n° {self.no_ord}) à {self.ville} pour le vol {self.vol} (Arrivée: {self.heure_arrive})"
+        return f"N° {self.no_ord} à {self.ville} arrivée à: {self.heure_arrive}"

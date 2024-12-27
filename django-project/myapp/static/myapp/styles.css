@@ -135,7 +135,7 @@ body {
 
 /* Hero section styling */
 .hero {
-    padding: 120px 0 100px;
+    padding: 120px 0px 0px;
     position: relative;
     overflow: hidden;
 }
@@ -557,7 +557,6 @@ button {
 }
 form button[type="submit"]:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
 }
 
 .btn-supprimer {
@@ -699,7 +698,7 @@ form button[type="submit"]:hover {
 
 /* Hover effect for action icons */
 .table-container .action-icon:hover {
-    color: #007BFF; /* Blue color on hover */
+    color: #eb4f44; /* Blue color on hover */
 }
 
 /* Responsive design for small screens */
@@ -906,8 +905,9 @@ form button[type="submit"]:hover {
 
 /* Form labels */
 .form-style form label {
-    display: block;
+    display: inline;
     margin-bottom: 5px;
+    margin-right: 7px;
     font-weight: 600;
     color: var(--text-light);
 }
@@ -924,4 +924,9 @@ form button[type="submit"]:hover {
 }
 ul {
     padding: 0 2rem;
+}
+
+.escale-actions {
+    display: inline-block;
+    padding: 0 1rem;
 }

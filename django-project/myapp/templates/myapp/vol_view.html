@@ -143,7 +143,7 @@
                 <p class="empty-message">Ce vol n'a pas d'escales</p>
             </div>
         {% else %}
-            <div class="info-container" id="escales-info">
+            <div class="info-panel" id="escales-info" style="margin-bottom: 8px;>
                 <ol class="escales-list">
                     {% for esc in escales %}
                         <li id="esc-{{ esc.pk }}" class="escale-item">

@@ -68,7 +68,7 @@
                             <th>ID</th>
                             <th>Nom</th>
                             <th>Nom du Pays</th>
-                            <th>Actions</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,7 +82,7 @@
                                         <form method="post" action="{% url 'ville_view' ville.pk %}" style="display:inline;">
                                             {% csrf_token %}
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" value="Supprimer" class="action-icon">🗑️</button> 
+                                            <button type="submit" value="Supprimer" class="action-icon"><i class="fa-solid fa-trash"></i></button> 
                                         </form>
                                     </div>
                                 </td>

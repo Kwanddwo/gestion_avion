@@ -14,9 +14,11 @@
     <body>
         <nav class="navbar">
             <div class="container nav-container">
-                <a href="{% url 'index' %}" class="logo">
-                    AirENSA
-                </a>
+                    <a href="{% url 'index' %}" class="logo">
+                        <div style="flex: none;">
+                            <span style="color: #0073b1;">Air</span>ENSA
+                        </div>
+                    </a>
                 <div class="nav-links">
                     <a href="{% url 'vol' %}" class="nav-link">Vols</a>
                     {% if request.user.is_authenticated %}
@@ -26,8 +28,8 @@
                     <a href="{% url 'ville' %}" class="nav-link">Villes</a>
                     <a href="{% url 'logout' %}" class="cta-button">Log out</a>
                     {% else %}
-                    <a href="{% url 'register' %}" class="nav-link">Enregistrer</a>
-                    <a href="{% url 'login' %}" class="cta-button">Login</a>
+                        <a href="{% url 'register' %}" class="nav-link">Register</a>
+                        <a href="{% url 'login' %}" class="cta-button">Login</a>
                     {% endif %}
                 </div>
             </div>
