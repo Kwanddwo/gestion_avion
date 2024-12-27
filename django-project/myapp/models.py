@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator
 from datetime import date, timedelta
+from django.utils.timezone import now
 
 class User(AbstractUser):
     pass
@@ -22,6 +23,8 @@ class Avion(models.Model):
     def interdit(self):
         if self.heures_vol_der_rev > MAX_HEURES_VOL or self.date_der_rev < date.today() - timedelta(days=MAX_DAYS):
             self.est_interdit = True
+        else:
+            self.est_interdit = False
     def add_heures_vol(self, vol):
         if not isinstance(vol, Vol):
             raise TypeError("argument vol is not of type Vol")
@@ -29,6 +32,10 @@ class Avion(models.Model):
         self.heures_vol += heures_vol
         self.heures_vol_der_rev += heures_vol
         self.interdit()
+    def clean(self):
+        super().clean()
+        self.interdit()
+        self.save()
     def __str__(self):
         return f"N° {self.pk} - type {self.type_avion}"
 
@@ -36,7 +43,7 @@ class Rapport(models.Model):
     avion = models.ForeignKey(Avion, on_delete=models.CASCADE, related_name="rapports")
     texte = models.TextField()
     heures_vol = models.PositiveIntegerField(default=0)
-    date = models.DateField(default=date.today(), help_text="Format: YYYY-MM-DD")
+    date = models.DateField(default=now(), help_text="Format: YYYY-MM-DD")
     def __str__(self):
         return f"Rapport pour avion {self.avion} - {self.date}"
 
@@ -48,6 +55,7 @@ class Employe(models.Model):
     date_embauche = models.DateField(auto_now_add=True, editable=False, help_text="Format: YYYY-MM-DD")
     fonction = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=15, validators=[RegexValidator(r"^[\d\s+\-]+$")])
+    adresse = models.TextField()
     salaire = models.DecimalField(max_digits=10, decimal_places=2)
     def __str__(self):
         return f"{self.prenom} {self.nom} - {self.fonction} {"navigant" if self.is_navigant else "non-navigant"}"

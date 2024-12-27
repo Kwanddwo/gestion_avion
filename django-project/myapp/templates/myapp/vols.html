@@ -99,7 +99,7 @@
                     </thead>
                     <tbody>
                         {% for vol in filter.qs %}
-                            {% if not vol.avion.est_interdit %}
+                            {% if request.user.is_authenticated or not vol.avion.est_interdit %}
                             <tr class="fade-in {%if vol.avion.est_interdit%}interdit{%endif%}" id="vol-info-{{ vol.id }}" onclick="window.location.href='/vol/{{ vol.id }}';" style="cursor: pointer;">
                                 <td>{{ vol.id }}</td>
                                 <td>{{ vol.depart.nom }} à {{ vol.heure_depart }}</td>
